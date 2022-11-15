@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+  <%- include('../partials/header'); %>
+</header>
+
+<main>
+  <div class="jumbotron">
+    <h1></h1>
+    <table>
+        <tbody>
+            <tr>
+                <th>
+                    &nbsp;
+                </th>
+                <th>&nbsp;</th>
+            </tr>
+    <% for (item of show) {%>
+        <tr>
+            <td align="left"><%= item.title %><br></td>
+        <td align="center"><%= item.url %></td>
+        </tr>
+        
+    <%}%>
+</tbody>
+</table>
+    <p></p>
+  </div>
+</main>
+
+<footer>
+  <%- include('../partials/footer'); %>
+</footer>
+<script src="/pages/script.js"></script>
+</body>
+</html>
