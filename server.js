@@ -5,7 +5,7 @@ let Parser = require('rss-parser');
 let parser = new Parser();
 let showTitle;
 let podcast = [];
-test = async () => {
+let loadFeed = async () => {
     let feed = await parser.parseURL('https://feeds.twit.tv/sn_video_hd.xml');
     console.log(feed.title + '\n');
     showTitle = feed.title;
@@ -15,12 +15,13 @@ test = async () => {
       //  console.log('\n' + item.title + ':' + item.content + '\n' + item.guid)
 })
 }
-test();
+loadFeed();
 app.get('/', (req, res) => {
     res.render('pages/index', {
         showTitle,podcast
     })
 })
+
 // set the view engine to ejs
 app.set('view engine', 'ejs');
 
@@ -32,8 +33,11 @@ app.get('/', function(req, res) {
 });
 
 // about page
-app.get('/about', function(req, res) {
-  res.render('pages/about');
+
+app.get('/player', (req, res) => {
+  res.render('pages/player', {
+    showTitle,podcast
+  })
 });
 
 app.listen(8080);
