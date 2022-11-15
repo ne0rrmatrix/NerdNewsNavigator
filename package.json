@@ -1,0 +1,23 @@
+{
+  "name": "twit-tv-player",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ne0rrmatrix/twit-tv-player.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ne0rrmatrix/twit-tv-player/issues"
+  },
+  "homepage": "https://github.com/ne0rrmatrix/twit-tv-player#readme",
+  "dependencies": {
+    "rss-parser": "^3.12.0"
+  }
+}
