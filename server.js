@@ -2,6 +2,9 @@ const express = require('express')
 const app = express()
 const Parser = require('rss-parser')
 const parser = new Parser()
+const path = require('node:path')
+const fullPath = path.join(__dirname, '/views/')
+
 // eslint-disable-next-line prefer-const
 let showData = []
 
@@ -46,8 +49,8 @@ let showTitle
 const podcast = []
 const loadFeed = async (data) => {
   const feed = await parser.parseURL(data)
-  // console.log(feed.title + '\n')
-  // showTitle = feed.title
+  //* console.log(feed.title + '\n')
+  //*  showTitle = feed.title
   showData.push({ title: feed.title }, { summary: feed.description })
   //* console.log(feed.description)
   //* console.log(showData)
@@ -59,15 +62,16 @@ const loadFeed = async (data) => {
   })
   // test()
 }
-
+/**
 const displayPodcastDetails = async () => {
   showData.forEach(element => {
     // console.log(element)
   })
 }
-const test = async () => {
+ const test = async () => {
   displayPodcastDetails()
 }
+*/
 LoadData()
 
 app.get('/', (req, res) => {
@@ -79,6 +83,7 @@ app.get('/', (req, res) => {
 // set the view engine to ejs
 app.set('view engine', 'ejs')
 
+app.use(express.static(fullPath))
 // use res.render to load up an ejs view file
 
 // index page
