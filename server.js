@@ -1,12 +1,15 @@
-const express = require('express')
-const app = express()
-const Parser = require('rss-parser')
-const parser = new Parser()
-const path = require('node:path')
-const fullPath = path.join(__dirname, '/views/')
+const express = require('express');
+
+const app = express();
+const Parser = require('rss-parser');
+
+const parser = new Parser();
+const path = require('node:path');
+
+const fullPath = path.join(__dirname, '/views/');
 
 // eslint-disable-next-line prefer-const
-let showData = []
+let showData = [];
 
 const feeds = () => {
   const twitFeedsVideo = [
@@ -30,38 +33,39 @@ const feeds = () => {
     { TotalLeo: 'https://feeds.twit.tv/leo_video_hd.xml' },
     { TotalAnt: 'https://feeds.twit.tv/ant_video_hd.xml' },
     { TotalJason: 'https://feeds.twit.tv/jason_video_hd.xml' },
-    { TotalMikah: 'https://feeds.twit.tv/mikah_video_hd.xml' }
-  ]
-  return twitFeedsVideo
-}
+    { TotalMikah: 'https://feeds.twit.tv/mikah_video_hd.xml' },
+  ];
+  return twitFeedsVideo;
+};
 
 const LoadData = async () => {
-  const data = feeds()
-  data.forEach(element => {
-    Object.keys(element).forEach(function (key) {
+  const data = feeds();
+  data.forEach((element) => {
+    Object.keys(element).forEach((key) => {
       // console.log(element[key])
-      loadFeed(element[key])
-    })
-  })
-}
+      // eslint-disable-next-line no-use-before-define
+      loadFeed(element[key]);
+    });
+  });
+};
 
-let showTitle
-const podcast = []
+let showTitle;
+const podcast = [];
 const loadFeed = async (data) => {
-  const feed = await parser.parseURL(data)
+  const feed = await parser.parseURL(data);
   //* console.log(feed.title + '\n')
   //*  showTitle = feed.title
-  showData.push({ title: feed.title }, { summary: feed.description })
+  showData.push({ title: feed.title }, { summary: feed.description });
   //* console.log(feed.description)
   //* console.log(showData)
   //* console.log(showData)
-  feed.items.forEach(item => {
-    const show = { title: item.title, link: item.guid, details: item.description }
-    podcast.push(show)
+  feed.items.forEach((item) => {
+    const show = { title: item.title, link: item.guid, details: item.description };
+    podcast.push(show);
     //  console.log('\n' + item.title + ':' + item.content + '\n' + item.guid)
-  })
+  });
   // test()
-}
+};
 /**
 const displayPodcastDetails = async () => {
   showData.forEach(element => {
@@ -72,32 +76,32 @@ const displayPodcastDetails = async () => {
   displayPodcastDetails()
 }
 */
-LoadData()
+LoadData();
 
 app.get('/', (req, res) => {
   res.render('pages/index', {
-    showData
-  })
-})
+    showData,
+  });
+});
 
 // set the view engine to ejs
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs');
 
-app.use(express.static(fullPath))
+app.use(express.static(fullPath));
 // use res.render to load up an ejs view file
 
 // index page
-app.get('/', function (req, res) {
-  res.render('pages/index')
-})
+app.get('/', (req, res) => {
+  res.render('pages/index');
+});
 
 // about page
 
 app.get('/player', (req, res) => {
   res.render('pages/player', {
-    showTitle, podcast
-  })
-})
+    showTitle, podcast,
+  });
+});
 
-app.listen(8080)
-console.log('Server is listening on port 8080')
+app.listen(8080);
+console.log('Server is listening on port 8080');
