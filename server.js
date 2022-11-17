@@ -2,7 +2,6 @@ const express = require('express')
 const app = express()
 const Parser = require('rss-parser')
 const parser = new Parser()
-const podcast = []
 
 const feeds = () => {
   const twitFeedsVideo = [
@@ -33,15 +32,21 @@ const feeds = () => {
 
 const LoadData = () => {
   const data = feeds()
-  for (const items of data) {
-    Object.keys(items).forEach(function (key) {
-      loadFeed(items[key])
+  data.forEach(element => {
+    Object.keys(element).forEach(function (key) {
+      // console.log(element[key])
+      loadFeed(element[key])
     })
-  }
+  })
 }
-
+const showData = []
+let showTitle
+const podcast = []
 const loadFeed = async (data) => {
   const feed = await parser.parseURL(data)
+  //* console.log(feed.title + '\n')
+  showTitle = feed.title
+  showData.push({ title: feed.title }, { summary: feed.summary })
   feed.items.forEach(item => {
     const show = { title: item.title, link: item.guid, details: item.content }
     podcast.push(show)
@@ -49,10 +54,9 @@ const loadFeed = async (data) => {
   })
 }
 LoadData()
-
 app.get('/', (req, res) => {
   res.render('pages/index', {
-    podcast
+    showTitle, podcast
   })
 })
 
@@ -70,7 +74,7 @@ app.get('/', function (req, res) {
 
 app.get('/player', (req, res) => {
   res.render('pages/player', {
-    podcast
+    showTitle, podcast
   })
 })
 
