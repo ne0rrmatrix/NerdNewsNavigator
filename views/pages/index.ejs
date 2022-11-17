@@ -9,31 +9,29 @@
   <%- include('../partials/header'); %>
 </header>
 <div class="containter">
-  <% let i = 0 %>
-  
-    <div class="row">
-      <% podcast.forEach((podcast)=> { %>    
-        <div class="col">              
-      <h2>
-      <%= podcast.title %>
-      </h2>
-      <p>Download Link:
-      <a href="<%= podcast.link %>" ><%= podcast.link %></a>
-      </p>
-      </p><%- podcast.details %></p>      
-        
+  <% let i = 0 %>  
+    <% showData.forEach((showData)=> { %>    
+      <% if ( i == 0) { %>
+        <div class="row">
+        <div class="col">
+      <% } %>
+      <h2> <%= showData.title %> </h2>
+      <p> <%= showData.summary %> </p>
+      
+      <% if (i <= 6) { i +=1 %> 
+      <% } %>
+      <% if (i == 2 || i == 4) { %>
+    
+      </div> 
+        <div class="col">
+        <%  } %>
+        <% if (i == 6) {  i = 0 %> 
         </div>
-      <% if (i < 2) { i +=1 %>
-         
-      <% } else {  i = 0 %> 
-    </div>  <div class="row">
-      <% i = 0 } %>
+      </div>
+      <% } %>
       <% }) %>
-    </div>
 </div>
  
-  
-
 <footer>
   <%- include('../partials/footer'); %>
 </footer>

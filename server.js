@@ -2,6 +2,8 @@ const express = require('express')
 const app = express()
 const Parser = require('rss-parser')
 const parser = new Parser()
+// eslint-disable-next-line prefer-const
+let showData = []
 
 const feeds = () => {
   const twitFeedsVideo = [
@@ -30,7 +32,7 @@ const feeds = () => {
   return twitFeedsVideo
 }
 
-const LoadData = () => {
+const LoadData = async () => {
   const data = feeds()
   data.forEach(element => {
     Object.keys(element).forEach(function (key) {
@@ -39,24 +41,38 @@ const LoadData = () => {
     })
   })
 }
-const showData = []
+
 let showTitle
 const podcast = []
 const loadFeed = async (data) => {
   const feed = await parser.parseURL(data)
-  //* console.log(feed.title + '\n')
-  showTitle = feed.title
-  showData.push({ title: feed.title }, { summary: feed.summary })
+  // console.log(feed.title + '\n')
+  // showTitle = feed.title
+  showData.push({ title: feed.title }, { summary: feed.description })
+  //* console.log(feed.description)
+  //* console.log(showData)
+  //* console.log(showData)
   feed.items.forEach(item => {
-    const show = { title: item.title, link: item.guid, details: item.content }
+    const show = { title: item.title, link: item.guid, details: item.description }
     podcast.push(show)
     //  console.log('\n' + item.title + ':' + item.content + '\n' + item.guid)
   })
+  // test()
+}
+
+const displayPodcastDetails = async () => {
+  showData.forEach(element => {
+    // console.log(element)
+  })
+}
+const test = async () => {
+  displayPodcastDetails()
 }
 LoadData()
+
 app.get('/', (req, res) => {
   res.render('pages/index', {
-    showTitle, podcast
+    showData
   })
 })
 
