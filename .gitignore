@@ -130,7 +130,7 @@ dist
 .pnp.*
 
 # eslint
-.eslint.*
+.eslintrc.js
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
