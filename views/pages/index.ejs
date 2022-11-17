@@ -3,34 +3,36 @@
 <head>
   <%- include('../partials/head'); %>
 </head>
-<body class="container">
+<body>
 
 <header>
   <%- include('../partials/header'); %>
 </header>
-
-<main>
-    
-    <h1><%=showTitle %></h1>
-    <div class="container-fluid">
-        <div class="grid" style="--bs-columns: 4; --bs-gap: 5rem;"> 
-        <% podcast.forEach((podcast)=> { %>
-            <div class="row">
-            <div class="g-col-6 g-col-md-4">
-                        <h2>
-                            <%= podcast.title %>
-                        </h2>
-                        <p>Download Link:
-                            <a href="<%= podcast.link %>" ><%= podcast.link %></a>
-                        </p>
-                    </p><%- podcast.details %></p>
-            </div>
+<div class="containter">
+  <% let i = 0 %>
+  
+    <div class="row">
+      <% podcast.forEach((podcast)=> { %>    
+        <div class="col">              
+      <h2>
+      <%= podcast.title %>
+      </h2>
+      <p>Download Link:
+      <a href="<%= podcast.link %>" ><%= podcast.link %></a>
+      </p>
+      </p><%- podcast.details %></p>      
+        
         </div>
-        <% }) %>
+      <% if (i < 2) { i +=1 %>
+         
+      <% } else {  i = 0 %> 
+    </div>  <div class="row">
+      <% i = 0 } %>
+      <% }) %>
     </div>
 </div>
-
-</main>
+ 
+  
 
 <footer>
   <%- include('../partials/footer'); %>

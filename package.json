@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "lint:ejs": "ejslint --ignore-path ./pages/index.ejs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
