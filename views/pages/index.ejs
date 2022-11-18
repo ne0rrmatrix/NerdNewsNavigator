@@ -14,10 +14,12 @@
     <div class="row">
       <div class="col">
         <% } %>
-        <h2>
+        <p id="name">
           <%= showData.title %>
-        </h2>
-        <img id="image" data-test="<%= showData.podcast %>" src="<%= showData.artwork %>" class="img-fluid" alt="Show image" style="width: auto; height: auto;">
+        </p>
+        <picture>
+        <img id="image" data-test="<%= showData.podcast %>" img loading="lazy" src="<%= showData.artwork %>" class="img-fluid img-thumbnail" alt="Show image"">
+      </picture>
         <% if (i <=6) { i +=1 %>
         <% } %>
         <% if (i==2 || i==4) { %>

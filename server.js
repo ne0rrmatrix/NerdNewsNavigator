@@ -40,7 +40,6 @@ const twitVideo = [
   { title: 'https://feeds.twit.tv/mikah_video_hd.xml' },
 ];
 
-let showTitle;
 const loadFeed = async (data) => {
   const feed = await parser.parseURL(data);
   const name = {};
@@ -51,9 +50,10 @@ const loadFeed = async (data) => {
   showData.push(name);
   feed.items.forEach((item) => {
     const shows = {
-      name: name.title, title: item.title, link: item.guid, details: item.content,
-
+      // eslint-disable-next-line max-len
+      name: name.title, title: item.title, link: item.guid, image: feed.image.url, url: data,
     };
+
     show.push(shows);
   });
 };
@@ -77,18 +77,18 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ type: 'application/*+json' }));
 app.use(express.static(fullPath));
-
+let test;
 app.post('/', (req, res) => {
-  const test = req.body.podcast;
+  test = req.body.podcast;
   console.log(test);
   app.render('pages/show', {
-    show,
+    show, test,
   });
   res.end('yes');
 });
 app.get('/pages/show', (req, res) => {
   res.render('pages/show', {
-    show,
+    show, test,
   });
 });
 app.get('/player', (req, res) => {
