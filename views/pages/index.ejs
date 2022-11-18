@@ -1,63 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <%- include('../partials/head'); %>
 </head>
-
 <body>
   <header>
     <%- include('../partials/header'); %>
   </header>
   <div class="containter">
     <% let i=0 %>
-      <% showData.forEach((showData)=>  {  %>
-        <% if ( i==0) { %>
-          <div class="row">
-            <div class="col">
-              <% } %>
-                <h2>
-                  <%= showData.title %>
-                </h2>
-                
-                  <img id="image" data-test="<%= showData.podcast %>"  src="<%= showData.artwork %>" class="img-fluid"  alt="Show image" style="width: auto; height: auto;">
-                  
-                <% if (i <=6) { i +=1 %>
-                  <% } %>
-                    <% if (i==2 || i==4) { %>
-            </div>
-            <div class="col">
-              <% } %>
-                <% if (i==6) { i=0 %>
-            </div>
-          </div>
-          <% } %>
-            <% }) %>
-            <script>
-                  document.body.onload = async () =>
-                  {
-                    const data = document.querySelectorAll('#image');
-                    data.forEach((element) => {
-                      $(element).click(() => {
-                        // console.log(element.dataset.test)
-                        $.post('http://localhost:8080/', { podcast: element.dataset.test }, (data) => {
-                          if (data === 'yes') {
-                            console.log('sucess!');
-                          }
-                        });
-                      });
-                    });
-                  }
-            </script>
-            
+    <% showData.forEach((showData)=>  {  %>
+    <% if ( i==0) { %>
+    <div class="row">
+      <div class="col">
+        <% } %>
+        <h2>
+          <%= showData.title %>
+        </h2>
+        <img id="image" data-test="<%= showData.podcast %>" src="<%= showData.artwork %>" class="img-fluid" alt="Show image" style="width: auto; height: auto;">
+        <% if (i <=6) { i +=1 %>
+        <% } %>
+        <% if (i==2 || i==4) { %>
+      </div>
+      <div class="col">
+        <% } %>
+        <% if (i==6) { i=0 %>
+      </div>
+    </div>
+    <% } %>
+    <% }) %>
+    <script>
+      document.body.onload = async () => {
+        const data = document.querySelectorAll('#image');
+        data.forEach((element) => {
+          $(element).click(() => {
+            // console.log(element.dataset.test)
+            $.post('http://localhost:8080/', {
+              podcast: element.dataset.test
+            }, (data) => {
+              if (data === 'yes') {
+                console.log('sucess!');
+                window.location.href = "/pages/show"
+              }
+            });
+          });
+        });
+      }
+    </script>
   </div>
- <script>
- 
-
-</script>
   <footer>
     <%- include('../partials/footer'); %>
   </footer>
 </body>
-
 </html>

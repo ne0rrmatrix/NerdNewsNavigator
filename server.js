@@ -51,10 +51,10 @@ const loadFeed = async (data) => {
   showData.push(name);
   feed.items.forEach((item) => {
     const shows = {
-      name: name.title, title: item.title, link: item.guid, details: item.description,
+      name: name.title, title: item.title, link: item.guid, details: item.content,
+
     };
     show.push(shows);
-    //  console.log('\n' + item.title + ':' + item.content + '\n' + item.guid)
   });
 };
 
@@ -63,6 +63,7 @@ const load = async () => {
     loadFeed(element.title);
   });
 };
+
 load();
 app.get('/', (req, res) => {
   res.render('pages/index', {
@@ -79,16 +80,20 @@ app.use(express.static(fullPath));
 
 app.post('/', (req, res) => {
   const test = req.body.podcast;
-
   console.log(test);
-  // eslint-disable-next-line no-restricted-syntax
-
+  app.render('pages/show', {
+    show,
+  });
   res.end('yes');
 });
-
+app.get('/pages/show', (req, res) => {
+  res.render('pages/show', {
+    show,
+  });
+});
 app.get('/player', (req, res) => {
   res.render('pages/player', {
-    showTitle, podcast,
+    show,
   });
 });
 

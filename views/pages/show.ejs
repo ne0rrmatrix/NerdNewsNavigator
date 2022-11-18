@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+</head>
+<body>
+  <header>
+    <%- include('../partials/header'); %>
+  </header>
+  <div class="containter">
+    <% let i=0 %>
+    <% show.forEach((show)=>  {  %>
+    <% if ( i==0) { %>
+    <div class="row">
+      <div class="col">
+        <% } %>
+        <p>
+          <% show.title %>
+        </p>
+         <%- show.details %>
+        <% if (i <=6) { i +=1 %>
+        <% } %>
+        <% if (i==2 || i==4) { %>
+      </div>
+      <div class="col">
+        <% } %>
+        <% if (i==6) { i=0 %>
+      </div>
+    </div>
+    <% } %>
+    <% }) %>
+    <script>
+    </script>
+  </div>
+  <footer>
+    <%- include('../partials/footer'); %>
+  </footer>
+</body>
+</html>
