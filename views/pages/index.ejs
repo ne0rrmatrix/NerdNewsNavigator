@@ -11,7 +11,7 @@
   </header>
   <div class="containter">
     <% let i=0 %>
-      <% showData.forEach((showData)=> { %>
+      <% showData.forEach((showData)=>  {  %>
         <% if ( i==0) { %>
           <div class="row">
             <div class="col">
@@ -19,10 +19,9 @@
                 <h2>
                   <%= showData.title %>
                 </h2>
-                <p>
-                  <%= showData.summary %>
-                </p>
-
+                
+                  <img id="image" data-test="<%= showData.podcast %>"  src="<%= showData.artwork %>" class="img-fluid"  alt="Show image" style="width: auto; height: auto;">
+                  
                 <% if (i <=6) { i +=1 %>
                   <% } %>
                     <% if (i==2 || i==4) { %>
@@ -34,7 +33,28 @@
           </div>
           <% } %>
             <% }) %>
+            <script>
+                  document.body.onload = async () =>
+                  {
+                    const data = document.querySelectorAll('#image');
+                    data.forEach((element) => {
+                      $(element).click(() => {
+                        // console.log(element.dataset.test)
+                        $.post('http://localhost:8080/', { podcast: element.dataset.test }, (data) => {
+                          if (data === 'yes') {
+                            console.log('sucess!');
+                          }
+                        });
+                      });
+                    });
+                  }
+            </script>
+            
   </div>
+ <script>
+ 
+
+</script>
   <footer>
     <%- include('../partials/footer'); %>
   </footer>

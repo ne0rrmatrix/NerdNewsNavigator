@@ -1,83 +1,69 @@
 const express = require('express');
 
 const app = express();
+const bodyParser = require('body-parser');
+
 const Parser = require('rss-parser');
 
 const parser = new Parser();
+
 const path = require('node:path');
+const { title } = require('node:process');
 
 const fullPath = path.join(__dirname, '/views/');
-
+const show = [];
 // eslint-disable-next-line prefer-const
 let showData = [];
-
-const feeds = () => {
-  const twitFeedsVideo = [
-    { AllAboutAndroid: 'https://feeds.twit.tv/aaa_video_hd.xml' },
-    { FlossWeekly: 'https://feeds.twit.tv/floss_video_hd.xml' },
-    { HandsOnMac: 'https://feeds.twit.tv/hom_video_hd.xml' },
-    { HandsOnPhotography: 'https://feeds.twit.tv/hop_video_hd.xml' },
-    { HandsOnWindows: 'https://feeds.twit.tv/howin_video_hd.xml' },
-    { IosToday: 'https://feeds.twit.tv/ipad_video_hd.xml' },
-    { MackBreakWeekly: 'https://feeds.twit.tv/mbw_video_hd.xml' },
-    { SecurityNow: 'https://feeds.twit.tv/sn_video_hd.xml' },
-    { TheTEchGuy: 'https://feeds.twit.tv/ttg_video_hd.xml' },
-    { TechNewsWeekly: 'https://feeds.twit.tv/tnw_video_hd.xml' },
-    { ThisWeekInEnterpriseTech: 'https://feeds.twit.tv/twiet_video_hd.xml' },
-    { ThisWeekInGoogle: 'https://feeds.twit.tv/twig_video_hd.xml' },
-    { ThisWeekInTech: 'https://feeds.twit.tv/twit_video_hd.xml' },
-    { TwitEvents: 'https://feeds.twit.tv/events_video_hd.xml' },
-    { TwitNews: 'https://feeds.twit.tv/specials_video_hd.xml' },
-    { TechBreak: 'https://feeds.twit.tv/bits_video_hd.xml' },
-    { TwitThrowBack: 'https://feeds.twit.tv/throwback_video_large.xml' },
-    { TotalLeo: 'https://feeds.twit.tv/leo_video_hd.xml' },
-    { TotalAnt: 'https://feeds.twit.tv/ant_video_hd.xml' },
-    { TotalJason: 'https://feeds.twit.tv/jason_video_hd.xml' },
-    { TotalMikah: 'https://feeds.twit.tv/mikah_video_hd.xml' },
-  ];
-  return twitFeedsVideo;
-};
-
-const LoadData = async () => {
-  const data = feeds();
-  data.forEach((element) => {
-    Object.keys(element).forEach((key) => {
-      // console.log(element[key])
-      // eslint-disable-next-line no-use-before-define
-      loadFeed(element[key]);
-    });
-  });
-};
+// eslint-disable-next-line prefer-const
+let podcast = [];
+const twitVideo = [
+  { title: 'https://feeds.twit.tv/aaa_video_hd.xml' },
+  { title: 'https://feeds.twit.tv/floss_video_hd.xml' },
+  { title: 'https://feeds.twit.tv/hom_video_hd.xml' },
+  { title: 'https://feeds.twit.tv/hop_video_hd.xml' },
+  { title: 'https://feeds.twit.tv/howin_video_hd.xml' },
+  { title: 'https://feeds.twit.tv/ipad_video_hd.xml' },
+  { title: 'https://feeds.twit.tv/mbw_video_hd.xml' },
+  { title: 'https://feeds.twit.tv/sn_video_hd.xml' },
+  { title: 'https://feeds.twit.tv/ttg_video_hd.xml' },
+  { title: 'https://feeds.twit.tv/tnw_video_hd.xml' },
+  { title: 'https://feeds.twit.tv/twiet_video_hd.xml' },
+  { title: 'https://feeds.twit.tv/twig_video_hd.xml' },
+  { title: 'https://feeds.twit.tv/twit_video_hd.xml' },
+  { title: 'https://feeds.twit.tv/events_video_hd.xml' },
+  { title: 'https://feeds.twit.tv/specials_video_hd.xml' },
+  { title: 'https://feeds.twit.tv/bits_video_hd.xml' },
+  { title: 'https://feeds.twit.tv/throwback_video_large.xml' },
+  { title: 'https://feeds.twit.tv/leo_video_hd.xml' },
+  { title: 'https://feeds.twit.tv/ant_video_hd.xml' },
+  { title: 'https://feeds.twit.tv/jason_video_hd.xml' },
+  { title: 'https://feeds.twit.tv/mikah_video_hd.xml' },
+];
 
 let showTitle;
-const podcast = [];
 const loadFeed = async (data) => {
   const feed = await parser.parseURL(data);
-  //* console.log(feed.title + '\n')
-  //*  showTitle = feed.title
-  showData.push({ title: feed.title }, { summary: feed.description });
-  //* console.log(feed.description)
-  //* console.log(showData)
-  //* console.log(showData)
+  const name = {};
+  name.title = feed.title;
+  name.summary = feed.description;
+  name.artwork = feed.image.url;
+  name.podcast = data;
+  showData.push(name);
   feed.items.forEach((item) => {
-    const show = { title: item.title, link: item.guid, details: item.description };
-    podcast.push(show);
+    const shows = {
+      name: name.title, title: item.title, link: item.guid, details: item.description,
+    };
+    show.push(shows);
     //  console.log('\n' + item.title + ':' + item.content + '\n' + item.guid)
   });
-  // test()
 };
-/**
-const displayPodcastDetails = async () => {
-  showData.forEach(element => {
-    // console.log(element)
-  })
-}
- const test = async () => {
-  displayPodcastDetails()
-}
-*/
-LoadData();
 
+const load = async () => {
+  twitVideo.forEach((element) => {
+    loadFeed(element.title);
+  });
+};
+load();
 app.get('/', (req, res) => {
   res.render('pages/index', {
     showData,
@@ -87,15 +73,18 @@ app.get('/', (req, res) => {
 // set the view engine to ejs
 app.set('view engine', 'ejs');
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ type: 'application/*+json' }));
 app.use(express.static(fullPath));
-// use res.render to load up an ejs view file
 
-// index page
-app.get('/', (req, res) => {
-  res.render('pages/index');
+app.post('/', (req, res) => {
+  const test = req.body.podcast;
+
+  console.log(test);
+  // eslint-disable-next-line no-restricted-syntax
+
+  res.end('yes');
 });
-
-// about page
 
 app.get('/player', (req, res) => {
   res.render('pages/player', {
