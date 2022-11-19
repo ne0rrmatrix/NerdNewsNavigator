@@ -19,8 +19,9 @@
         <span>
           <h6> <%= output.title %> </h6>
         </span>
-        <% let data = output.link %> 
-        <video id="video" controls id="videoPlayer"  width="100%" preload="none">
+        
+       
+        <video id="video" controls id="videoPlayer" poster="<%- output.webm  %>" width="100%" preload="none">
           <source src="<%= output.link %> " type="video/mp4" />
           <track label="English" kind="descriptions" default>
         </video>

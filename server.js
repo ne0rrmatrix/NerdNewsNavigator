@@ -1,5 +1,8 @@
 const express = require('express');
 const jsdom = require('jsdom');
+const ffmpeg = require('ffmpeg-static');
+
+const ffmpegPath = ('./node_modules/ffmpeg-static/ffmpeg.exe');
 
 const dom = new jsdom.JSDOM('');
 const jquery = require('jquery')(dom.window);
@@ -15,6 +18,7 @@ const parser = new Parser();
 
 const path = require('node:path');
 const { title } = require('node:process');
+const { verify } = require('crypto');
 
 const fullPath = path.join(__dirname, '/views/');
 const show = [];
@@ -46,6 +50,32 @@ const twitVideo = [
   { title: 'https://feeds.twit.tv/mikah_video_hd.xml' },
 ];
 
+const getMetaData = async (data) => {
+  let i = 0;
+  const feed = await parser.parseURL(data);
+  feed.items.forEach(async (item) => {
+    if (item.guid.includes('.mp4')) {
+      const str = String(item.title);
+      const result = str.split(' ')[0] + i;
+
+      await genThumbnail(item.guid, `./views/${result}.jpg`, '540x?', {
+        vf: 'select=gt(scene\\,0.5)', seek: '00:00.15', path: ffmpegPath,
+      })
+        .then(async () => {
+          setTimeout(() => {
+            console.log(item.guid);
+            console.log('done');
+            i += 1;
+          });
+        });
+    }
+  });
+};
+const loadMetaData = async () => {
+  twitVideo.forEach((element) => {
+    getMetaData(element.title);
+  });
+};
 const loadFeed = async (data) => {
   const feed = await parser.parseURL(data);
   const name = {};
@@ -54,12 +84,11 @@ const loadFeed = async (data) => {
   name.artwork = feed.image.url;
   name.podcast = data;
   showData.push(name);
-  feed.items.forEach((item) => {
+  feed.items.forEach(async (item) => {
     const shows = {
       // eslint-disable-next-line max-len
       name: name.title, title: item.title, link: item.guid, image: feed.image.url, url: data,
     };
-
     show.push(shows);
   });
 };
@@ -71,6 +100,7 @@ const load = async () => {
 };
 
 load();
+loadMetaData();
 app.get('/', (req, res) => {
   res.render('pages/index', {
     showData,
@@ -86,33 +116,26 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ type: 'application/*+json' }));
 app.use(express.static(fullPath));
 let test;
-app.post('/', (req, res) => {
+app.post('/', async (req, res) => {
   test = req.body.podcast;
-  const shouldSkip = false;
-  const data = [];
-  show.forEach((element) => {
-    if (shouldSkip) {
-      return;
-    }
-    if (element.url === test && shouldSkip === false) {
-      console.log(element.url);
+  show.forEach(async (element) => {
+    if (element.url === test) {
+      console.log(element.link);
       output.push({
-        // eslint-disable-next-line max-len
-        name: element.name, title: element.title, link: element.link, image: element.image, url: element.url,
+        // eslint-disable-next-line max-len, object-shorthand
+        name: element.name, title: element.title, link: element.link, image: element.image, url: element.url, webm: element.webm,
       });
-      // shouldSkip = true;
     }
   });
-  app.render('pages/show', {
-    output, test,
+
+  app.get('/pages/show', (request, response) => {
+    response.render('pages/show', {
+      output, test,
+    });
   });
   res.end('yes');
 });
-app.get('/pages/show', (req, res) => {
-  res.render('pages/show', {
-    output, test,
-  });
-});
+
 app.get('/player', (req, res) => {
   res.render('pages/player', {
     show,
