@@ -3,6 +3,8 @@ const jsdom = require('jsdom');
 
 const dom = new jsdom.JSDOM('');
 const jquery = require('jquery')(dom.window);
+const fs = require('fs');
+const genThumbnail = require('simple-thumbnail');
 
 const app = express();
 const bodyParser = require('body-parser');
@@ -74,7 +76,8 @@ app.get('/', (req, res) => {
     showData,
   });
 });
-
+// eslint-disable-next-line prefer-const
+let output = [];
 // set the view engine to ejs
 app.set('view engine', 'ejs');
 
@@ -85,15 +88,29 @@ app.use(express.static(fullPath));
 let test;
 app.post('/', (req, res) => {
   test = req.body.podcast;
-  console.log(test);
+  const shouldSkip = false;
+  const data = [];
+  show.forEach((element) => {
+    if (shouldSkip) {
+      return;
+    }
+    if (element.url === test && shouldSkip === false) {
+      console.log(element.url);
+      output.push({
+        // eslint-disable-next-line max-len
+        name: element.name, title: element.title, link: element.link, image: element.image, url: element.url,
+      });
+      // shouldSkip = true;
+    }
+  });
   app.render('pages/show', {
-    show, test,
+    output, test,
   });
   res.end('yes');
 });
 app.get('/pages/show', (req, res) => {
   res.render('pages/show', {
-    show, test,
+    output, test,
   });
 });
 app.get('/player', (req, res) => {

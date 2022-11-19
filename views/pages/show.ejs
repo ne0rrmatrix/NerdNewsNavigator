@@ -11,17 +11,17 @@
   </header>
   <div class="containter-fluid">
     <% let i=0 %>
-    <% show.forEach((show)=>  {  %>
-    <% if ( show.url == test) { %>
+    <% output.forEach((output)=>  {  %>
     <% if ( i==0) { %>
     <div class="row row-cols-3">
       <div class="col-lg-4 col-md-4 col-sm-4 col-4">
         <% } %>
         <span>
-          <h6> <%= show.title %> </h6>
+          <h6> <%= output.title %> </h6>
         </span>
-        <video controls id="videoPlayer" width="100%" preload="none">
-          <source src="<%= show.link %> " type="video/mp4" />
+        <% let data = output.link %> 
+        <video id="video" controls id="videoPlayer"  width="100%" preload="none">
+          <source src="<%= output.link %> " type="video/mp4" />
           <track label="English" kind="descriptions" default>
         </video>
         <% if (i <=3) { i +=1 %>
@@ -34,10 +34,12 @@
       </div>
     </div>
     <% } %>
-    <% } %>
     <% }) %>
   </div>
   </div>
+  <script>
+    
+    </script>
   </div>
   <footer>
     <%- include('../partials/footer'); %>
