@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <%- include('../partials/head'); %>
 </head>
+
 <body>
   <header>
     <%- include('../partials/header'); %>
@@ -12,46 +14,29 @@
     <% showData.forEach((showData)=>  {  %>
     <% if ( i==0) { %>
     <div class="row">
-      <div class="col">
+      <div class="col" style="width: inherit;">
         <% } %>
         <p id="name">
           <%= showData.title %>
         </p>
         <picture>
-        <img id="image" data-test="<%= showData.podcast %>" img loading="lazy" src="<%= showData.artwork %>" class="img-fluid img-thumbnail" alt="Show image"">
+          <img id="image" data-test="<%= showData.podcast %>" img loading="lazy" src="<%= showData.artwork %>" class="img-fluid img-thumbnail" alt="Show image"">
       </picture>
         <% if (i <=6) { i +=1 %>
         <% } %>
         <% if (i==2 || i==4) { %>
       </div>
-      <div class="col">
-        <% } %>
-        <% if (i==6) { i=0 %>
+      <div class=" col" style="width: inherit;">
+          <% } %>
+          <% if (i==6) { i=0 %>
       </div>
     </div>
     <% } %>
     <% }) %>
-    <script>
-      document.body.onload = async () => {
-        const data = document.querySelectorAll('#image');
-        data.forEach((element) => {
-          $(element).click(() => {
-            // console.log(element.dataset.test)
-            $.post('http://localhost:8080/', {
-              podcast: element.dataset.test
-            }, (data) => {
-              if (data === 'yes') {
-                console.log('sucess!');
-                window.location.href = "/pages/show"
-              }
-            });
-          });
-        });
-      }
-    </script>
   </div>
   <footer>
     <%- include('../partials/footer'); %>
   </footer>
 </body>
+
 </html>

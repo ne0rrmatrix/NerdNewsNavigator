@@ -1,4 +1,8 @@
 const express = require('express');
+const jsdom = require('jsdom');
+
+const dom = new jsdom.JSDOM('');
+const jquery = require('jquery')(dom.window);
 
 const app = express();
 const bodyParser = require('body-parser');
@@ -74,6 +78,7 @@ app.get('/', (req, res) => {
 // set the view engine to ejs
 app.set('view engine', 'ejs');
 
+app.use('/jquery', express.static(`${__dirname}/node_modules/jquery/dist/`));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ type: 'application/*+json' }));
 app.use(express.static(fullPath));

@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <%- include('../partials/head'); %>
 </head>
+
 <body class="container">
   <header>
     <%- include('../partials/header'); %>
   </header>
   <main>
     <div class="container-fluid">
-    <h1>
-      <%=showTitle %>
-    </h1>
-   
+      <h1>
+        <%=showTitle %>
+      </h1>
+
       <video id="videoPlayer" controls>
-        <source src="https://cdn.twit.tv/video/sn/sn0896/sn0896_h264m_1920x1080.mp4"  type="video/mp4" />
+        <source src="https://cdn.twit.tv/video/sn/sn0896/sn0896_h264m_1920x1080.mp4" type="video/mp4" />
         <track label="English" kind="descriptions" default>
     </div>
   </main>
@@ -22,4 +24,5 @@
     <%- include('../partials/footer'); %>
   </footer>
 </body>
+
 </html>

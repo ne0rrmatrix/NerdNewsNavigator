@@ -1,65 +1,47 @@
-div {
-    margin-top: auto;
-    margin-bottom: auto;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-}
-body {
-    margin-left: auto;
-    margin-right: auto;
-    align-items: center;
-   
-}
-video {
-    margin-left: auto;
-    margin-right: auto;
-}
-.text-responsive {
-    font-size: calc(100% + 1vw + 1vh);
-  }
-
-image {
-    width: auto;
-    align-items: center;
+h1,
+h2,
+h6 {
+    border: 5px;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: justify-all;
 }
 
-@import url('https://fonts.googleapis.com/css?family=Bowlby+One+SC');
-
-h1,h2,h6 {
-  text-align: left;
-  width: 565px;
-  overflow: hidden;
-  font-family: 'Bowlby One SC', cursive;
-  display: table; /*THAT DOES THE MAGIC*/
-
+span {
+    display: table;
+    height: 75px;
+    line-height: 75px;
 }
+
 footer {
     margin-top: auto;
 }
-#show
-{
+
+#show {
     overflow-wrap: break-word;
     height: auto;
-    width: 565px;
+    width: auto;
     line-height: auto;
     text-align: justify-all;
     overflow: hidden;
     font-family: Tahoma, sans-serif;
-    display: table; /*THAT DOES THE MAGIC*/
+    display: table;
+    /*THAT DOES THE MAGIC*/
     margin: auto;
- 
+
 }
+
 #name {
     block-size: auto;
-    
+
     height: auto;
     line-height: auto;
     text-align: center;
     overflow: hidden;
-    width: 100%;
+    width: auto;
     font-family: Tahoma, sans-serif;
-    display: table; /*THAT DOES THE MAGIC*/
+    display: table;
+    /*THAT DOES THE MAGIC*/
     margin: auto;
-/* THE BORDER IS FOR TEST PURPOSES TO SEE WHAT'S HAPPENING WITH THE DIV*/
+    /* THE BORDER IS FOR TEST PURPOSES TO SEE WHAT'S HAPPENING WITH THE DIV*/
 }
