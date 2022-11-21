@@ -30,7 +30,6 @@ footer {
     margin: auto;
 
 }
-
 #name {
     block-size: auto;
 
@@ -45,3 +44,8 @@ footer {
     margin: auto;
     /* THE BORDER IS FOR TEST PURPOSES TO SEE WHAT'S HAPPENING WITH THE DIV*/
 }
+body {
+    padding-top: 50px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }

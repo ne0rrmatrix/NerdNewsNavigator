@@ -2,10 +2,13 @@
   "name": "twit-tv",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "lint:ejs": "ejslint  views/pages/*.ejs",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +16,7 @@
   "dependencies": {
     "body-parser": "^1.20.1",
     "ejs": "^3.1.8",
+    "electron-squirrel-startup": "^1.0.0",
     "express": "^4.18.2",
     "ffmpeg-static": "^5.1.0",
     "jquery": "^3.6.1",
@@ -22,6 +26,12 @@
     "simple-thumbnail": "^1.6.5"
   },
   "devDependencies": {
+    "@electron-forge/cli": "^6.0.3",
+    "@electron-forge/maker-deb": "^6.0.3",
+    "@electron-forge/maker-rpm": "^6.0.3",
+    "@electron-forge/maker-squirrel": "^6.0.3",
+    "@electron-forge/maker-zip": "^6.0.3",
+    "electron": "^21.3.0",
     "eslint": "^8.27.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0"
