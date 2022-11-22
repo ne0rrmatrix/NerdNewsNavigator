@@ -1,13 +1,13 @@
 /* eslint-disable no-use-before-define */
 const express = require('express');
-const jsdom = require('jsdom');
-const ffmpeg = require('ffmpeg-static');
-const https = require('https');
+//* const jsdom = require('jsdom');
+//* const ffmpeg = require('ffmpeg-static');
+//* const https = require('https');
 
 const ffmpegPath = ('./node_modules/ffmpeg-static/ffmpeg.exe');
 
-const dom = new jsdom.JSDOM('');
-const jquery = require('jquery')(dom.window);
+//* const dom = new jsdom.JSDOM('');
+//* const jquery = require('jquery')(dom.window);
 const fs = require('fs');
 const genThumbnail = require('simple-thumbnail');
 
@@ -19,7 +19,7 @@ const Parser = require('rss-parser');
 const parser = new Parser();
 
 const path = require('node:path');
-const { timeStamp } = require('console');
+//* const { timeStamp } = require('console');
 
 const fullPath = path.join(__dirname, '/views/');
 
@@ -30,7 +30,7 @@ let showData = [];
 let podcast = [];
 // eslint-disable-next-line prefer-const
 let output = [];
-let temp = 'no';
+
 const twitVideo = [
   { title: 'https://feeds.twit.tv/aaa_video_hd.xml' },
   { title: 'https://feeds.twit.tv/floss_video_hd.xml' },
@@ -115,7 +115,7 @@ const createThumbnails = async (item, file, result) => {
       });
     }
   } catch (error) {
-    temp = 'yes';
+    console.log(error);
   }
 };
 app.get('/', (req, res) => {
@@ -184,7 +184,7 @@ app.post('/', async (req, res) => {
 
 app.listen(8080);
 console.log('Server is listening on port 8080');
-
+/**
 async function checkUrlExists(url) {
   const domain = (new URL(url));
   try {
@@ -201,7 +201,7 @@ async function checkUrlExists(url) {
     console.log(error);
   }
 }
-
+ */
 function getFilenameFromUrl(url) {
   const { pathname } = new URL(url);
   const index = pathname.lastIndexOf('/');

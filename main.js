@@ -3,6 +3,8 @@ const path = require('node:path');
 const server = require('./app');
 if (require('electron-squirrel-startup')) app.quit();
 
+app.disableHardwareAcceleration();
+
 let mainWindow;
 
 function createWindow() {

@@ -22,18 +22,13 @@
         <picture>
           <img id="images" data-show="<%= output.link %>" img loading="lazy" src="/pages/cache/<%= output.webm %>" width="540" class="img-fluid img-thumbnail" alt="Show image"">
       </picture>
-       <!-- <video id="video" controls id="videoPlayer" poster="/pages/cache/<%= output.webm  %>" width="100%" preload="none">
-          <source src="<%= output.link %> " type="video/mp4" />
-          <track label="English" kind="descriptions" default>
-        </video>
-        -->
-        <% if (i <=3) { i +=1 %>
-        <% } %>
-        <% if (i < 3) { %>
+          <% if (i <=3) { i +=1 %>
+          <% } %>
+          <% if (i < 3) { %>
       </div>
-      <div class="col-lg-4 col-md-4 col-sm-4 col-4">
-        <% } %>
-        <% if (i==3) { i=0 %>
+      <div class=" col-lg-4 col-md-4 col-sm-4 col-4">
+          <% } %>
+          <% if (i==3) { i=0 %>
       </div>
     </div>
     <% } %>
