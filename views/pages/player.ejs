@@ -15,11 +15,11 @@
       <h1>
         <%= podcast.title %>
       </h1>
-        <video id="video" controls id="videoPlayer" poster="/pages/cache/<%= podcast.webm  %>" width="100%" preload="none">
+        <video id="video" controls id="videoPlayer" poster="/pages/cache/<%= podcast.webm  %>" width="900" preload="none">
           <source src="<%= podcast.link %> " type="video/mp4" />
           <track label="English" kind="descriptions" default>
         </video>
-      
+        <p><%- podcast.summary %></p>
       <% }) %> 
     </div>
   </main>

@@ -6,7 +6,11 @@ h6 {
     vertical-align: middle;
     text-align: justify-all;
 }
-
+p {
+    display: table;
+    height: fit-content;
+    width: fit-content;
+}
 span {
     display: table;
     height: 75px;

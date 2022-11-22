@@ -19,6 +19,7 @@ const Parser = require('rss-parser');
 const parser = new Parser();
 
 const path = require('node:path');
+const { timeStamp } = require('console');
 
 const fullPath = path.join(__dirname, '/views/');
 
@@ -29,6 +30,7 @@ let showData = [];
 let podcast = [];
 // eslint-disable-next-line prefer-const
 let output = [];
+let temp = 'no';
 const twitVideo = [
   { title: 'https://feeds.twit.tv/aaa_video_hd.xml' },
   { title: 'https://feeds.twit.tv/floss_video_hd.xml' },
@@ -55,61 +57,72 @@ const twitVideo = [
 
 const loadFeed = async (data) => {
   const feed = await parser.parseURL(data);
+
   const name = {};
   name.title = feed.title;
   name.summary = feed.description;
-  name.artwork = feed.image.url;
+
+  let artwork = getFilenameFromUrl(feed.image.url);
+  artwork = path.parse(artwork).name;
+  artwork = `${artwork.toString()}.jpg`;
+
+  const files = `./pages/cache/album_art/${artwork}`;
+
+  name.artwork = files;
   name.podcast = data;
+
   showData.push(name);
+
   feed.items.forEach(async (item) => {
     const shows = {
-      name: name.title, title: item.title, link: item.guid, image: feed.image.url, url: data,
+      name: name.title,
+      title: item.title,
+      link: item.guid,
+      image: artwork,
+      url: data,
+      content: item.content,
     };
     show.push(shows);
   });
+
+  await setData(feed);
+};
+
+const loadData = async () => {
+  twitVideo.forEach(async (element) => {
+    await loadFeed(element.title);
+  });
+};
+
+loadData();
+const setData = async (feed) => {
   feed.items.forEach(async (item) => {
     if (item.guid.includes('http')) {
       let result = getFilenameFromUrl(item.guid);
       result = path.parse(result).name;
       result = `${result.toString()}.jpg`;
       const file = `./views/pages/cache/${result}`;
-      if (fs.existsSync(file)) {
-        console.log(`thumbnail ${file} file exists`);
-      } else {
-        try {
-          console.log(`Generating thumbmail for ${item.guid}`);
-          await genThumbnail(item.guid, `./views/pages/cache/${result}`, '540x?', {
-            vf: 'select=gt(scene\\,0.5)', seek: '00:01.15', path: ffmpegPath,
-          });
-          console.log(`Generated thumbnail for ${item.guid}`);
-        } catch (error) {
-          console.log(`error generating thumbnail for ${item.guid}`);
-        }
-      }
+      await createThumbnails(item, file, result);
     }
   });
-  console.log('Done Generating thumbnails!');
-};
-/*
-process.on('uncaughtException', (e) => {
-  console.log(`Uncaught Exception: ${e.message}`);
-  process.exit(1);
-});
-*/
-const load = async () => {
-  twitVideo.forEach((element) => {
-    loadFeed(element.title);
-  });
 };
 
-load();
-
+const createThumbnails = async (item, file, result) => {
+  try {
+    if (!fs.existsSync(file)) {
+      await genThumbnail(item.guid, `./views/pages/cache/${result}`, '1110x?', {
+        vf: 'select=gt(scene\\,0.5)', seek: '00:03.15', path: ffmpegPath,
+      });
+    }
+  } catch (error) {
+    temp = 'yes';
+  }
+};
 app.get('/', (req, res) => {
   res.render('pages/index', {
     showData,
   });
 });
-// eslint-disable-next-line prefer-const
 
 app.set('view engine', 'ejs');
 
@@ -122,7 +135,6 @@ app.post('/', async (req, res) => {
   const test = req.body.podcast;
 
   const test2 = req.body.show;
-
   if (req.body.podcast) {
     output.length = 0;
     show.forEach((element) => {
@@ -131,8 +143,10 @@ app.post('/', async (req, res) => {
         result = path.parse(result).name;
         result = `${result.toString()}.jpg`;
         output.push({
-          // eslint-disable-next-line max-len, object-shorthand
-          name: element.name, title: element.title, link: element.link, image: element.image, url: element.url, webm: result, show: element.guid,
+          title: element.title,
+          link: element.link,
+          webm: result,
+          content: element.content,
         });
       }
     });
@@ -151,8 +165,10 @@ app.post('/', async (req, res) => {
         result = path.parse(result).name;
         result = `${result.toString()}.jpg`;
         podcast.push({
-          // eslint-disable-next-line max-len, object-shorthand
-          name: element.name, title: element.title, link: element.link, image: element.image, url: element.url, webm: result, show: element.show,
+          title: element.title,
+          link: element.link,
+          webm: result,
+          summary: element.content,
         });
       }
     });
@@ -160,7 +176,6 @@ app.post('/', async (req, res) => {
       rese.render('pages/player', {
         podcast,
       });
-      console.log(podcast);
     });
   }
 
