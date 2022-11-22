@@ -1,7 +1,4 @@
-window.onload = async () => {
-  const data = document.querySelectorAll('#image');
-  const show = document.querySelectorAll('#images');
-
+const getShow = (show) => {
   show.forEach((element) => {
     $(element).click(() => {
       $.post('http://localhost:8080/', {
@@ -14,7 +11,8 @@ window.onload = async () => {
       });
     });
   });
-
+};
+const getPodcast = (data) => {
   data.forEach((element) => {
     $(element).click(() => {
       $.post('http://localhost:8080/', {
@@ -27,4 +25,10 @@ window.onload = async () => {
       });
     });
   });
+};
+window.onload = async () => {
+  const data = document.querySelectorAll('#image');
+  const show = document.querySelectorAll('#images');
+  getShow(show);
+  getPodcast(data);
 };

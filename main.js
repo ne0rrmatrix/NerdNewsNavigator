@@ -35,7 +35,7 @@ function createWindow() {
     splash.close();
     mainWindow.webContents.reloadIgnoringCache();
     mainWindow.show();
-  }, 5000);
+  }, 3000);
 
   mainWindow.on('closed', () => {
     mainWindow = null;

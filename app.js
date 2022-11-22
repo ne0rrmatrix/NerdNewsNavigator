@@ -31,6 +31,14 @@ let podcast = [];
 // eslint-disable-next-line prefer-const
 let output = [];
 
+app.set('view engine', 'ejs');
+
+app.use('/jquery', express.static(`${__dirname}/node_modules/jquery/dist/`));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ type: 'application/*+json' }));
+app.use(express.static(fullPath));
+app.listen(8080);
+
 const twitVideo = [
   { title: 'https://feeds.twit.tv/aaa_video_hd.xml' },
   { title: 'https://feeds.twit.tv/floss_video_hd.xml' },
@@ -88,13 +96,6 @@ const loadFeed = async (data) => {
   await setData(feed);
 };
 
-const loadData = async () => {
-  twitVideo.forEach(async (element) => {
-    await loadFeed(element.title);
-  });
-};
-
-loadData();
 const setData = async (feed) => {
   feed.items.forEach(async (item) => {
     if (item.guid.includes('http')) {
@@ -104,6 +105,12 @@ const setData = async (feed) => {
       const file = `./views/pages/cache/${result}`;
       await createThumbnails(item, file, result);
     }
+  });
+};
+
+const loadData = async () => {
+  twitVideo.forEach(async (element) => {
+    await loadFeed(element.title);
   });
 };
 
@@ -118,90 +125,79 @@ const createThumbnails = async (item, file, result) => {
     console.log(error);
   }
 };
+
+loadData();
+
 app.get('/', (req, res) => {
   res.render('pages/index', {
     showData,
   });
 });
 
-app.set('view engine', 'ejs');
-
-app.use('/jquery', express.static(`${__dirname}/node_modules/jquery/dist/`));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json({ type: 'application/*+json' }));
-app.use(express.static(fullPath));
-
 app.post('/', async (req, res) => {
   const test = req.body.podcast;
 
   const test2 = req.body.show;
   if (req.body.podcast) {
-    output.length = 0;
-    show.forEach((element) => {
-      if (element.url === test) {
-        let result = getFilenameFromUrl(element.link);
-        result = path.parse(result).name;
-        result = `${result.toString()}.jpg`;
-        output.push({
-          title: element.title,
-          link: element.link,
-          webm: result,
-          content: element.content,
-        });
-      }
-    });
-    app.get('/pages/show', (request, response) => {
-      response.render('pages/show', {
-        output, test,
-      });
-    });
+    getPodcast(test);
   }
   if (req.body.show) {
-    podcast.length = 0;
-    console.log(test2);
-    output.forEach((element) => {
-      if (element.link === test2) {
-        let result = getFilenameFromUrl(element.link);
-        result = path.parse(result).name;
-        result = `${result.toString()}.jpg`;
-        podcast.push({
-          title: element.title,
-          link: element.link,
-          webm: result,
-          summary: element.content,
-        });
-      }
-    });
-    app.get('/pages/player', (reqs, rese) => {
-      rese.render('pages/player', {
-        podcast,
-      });
-    });
+    getShow(test2);
   }
 
   res.end('yes');
 });
 
-app.listen(8080);
 console.log('Server is listening on port 8080');
-/**
-async function checkUrlExists(url) {
-  const domain = (new URL(url));
-  try {
-    https.get(domain, (res) => {
-      const { statusCode } = res;
-      let error;
-      if (statusCode !== 200) {
-        error = new Error('Request failed.\n'
-                          + 'Status Code: $(statusCode)');
-        console.log(error.message);
-      }
+const getPodcast = (test) => {
+  output.length = 0;
+
+  show.forEach((element) => {
+    if (element.url === test) {
+      let result = getFilenameFromUrl(element.link);
+      result = path.parse(result).name;
+      result = `${result.toString()}.jpg`;
+      output.push({
+        title: element.title,
+        link: element.link,
+        webm: result,
+        content: element.content,
+      });
+    }
+  });
+
+  app.get('/pages/show', (request, response) => {
+    response.render('pages/show', {
+      output, test,
     });
-  } catch (error) {
-    console.log(error);
-  }
-}
- */
+  });
+};
+
+const getShow = (test2) => {
+  podcast.length = 0;
+  console.log(test2);
+
+  output.forEach((element) => {
+    if (element.link === test2) {
+      let result = getFilenameFromUrl(element.link);
+      result = path.parse(result).name;
+      result = `${result.toString()}.jpg`;
+      podcast.push({
+        title: element.title,
+        link: element.link,
+        webm: result,
+        summary: element.content,
+      });
+    }
+  });
+
+  app.get('/pages/player', (reqs, rese) => {
+    rese.render('pages/player', {
+      podcast,
+    });
+  });
+};
+
 function getFilenameFromUrl(url) {
   const { pathname } = new URL(url);
   const index = pathname.lastIndexOf('/');
