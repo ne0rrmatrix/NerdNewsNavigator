@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const getShow = (show) => {
   show.forEach((element) => {
     $(element).click(() => {

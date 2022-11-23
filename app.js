@@ -3,6 +3,7 @@ const express = require('express');
 //* const jsdom = require('jsdom');
 //* const ffmpeg = require('ffmpeg-static');
 //* const https = require('https');
+const { pRateLimit } = require('p-ratelimit');
 
 const ffmpegPath = ('./node_modules/ffmpeg-static/ffmpeg.exe');
 
@@ -23,6 +24,13 @@ const path = require('node:path');
 
 const fullPath = path.join(__dirname, '/views/');
 
+const limit = pRateLimit({
+  interval: 1000, // 1000 ms == 1 second
+  rate: 30, // 30 API calls per interval
+  concurrency: 20, // no more than 10 running at once
+  maxDelay: 1200000, // an API call delayed > 2 sec is rejected
+});
+
 const show = [];
 // eslint-disable-next-line prefer-const
 let showData = [];
@@ -32,7 +40,6 @@ let podcast = [];
 let output = [];
 
 app.set('view engine', 'ejs');
-
 app.use('/jquery', express.static(`${__dirname}/node_modules/jquery/dist/`));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ type: 'application/*+json' }));
@@ -117,9 +124,9 @@ const loadData = async () => {
 const createThumbnails = async (item, file, result) => {
   try {
     if (!fs.existsSync(file)) {
-      await genThumbnail(item.guid, `./views/pages/cache/${result}`, '1110x?', {
+      await limit(() => genThumbnail(item.guid, `./views/pages/cache/${result}`, '1110x?', {
         vf: 'select=gt(scene\\,0.5)', seek: '00:03.15', path: ffmpegPath,
-      });
+      }));
     }
   } catch (error) {
     console.log(error);
