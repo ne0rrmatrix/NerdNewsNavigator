@@ -134,6 +134,11 @@ app.get('/', (req, res) => {
   });
 });
 
+app.get('/Live', (req, res) => {
+  res.render('pages/Live', {
+  });
+});
+
 app.post('/', async (req, res) => {
   const test = req.body.podcast;
 
