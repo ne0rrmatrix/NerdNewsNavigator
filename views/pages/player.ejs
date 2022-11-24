@@ -3,31 +3,30 @@
 
 <head>
   <%- include('../partials/head'); %>
+  <script src="/pages/player.js"></script>
 </head>
 
 <body class="container">
-
   <header>
     <%- include('../partials/header'); %>
   </header>
-
   <main>
-
-    <h1>
-      <%=showTitle %>
-    </h1>
     <div class="container-fluid">
-      <video id="videoPlayer" width="650" controls>
-        <source src="https://cdn.twit.tv/video/sn/sn0896/sn0896_h264m_1920x1080.mp4" type="video/mp4" />
+      <% podcast.forEach((podcast)=>  {  %>
+      <h1>
+        <%= podcast.title %>
+      </h1>
+      <video id="vid" controls id="videoPlayer" poster="/pages/cache/<%= podcast.webm  %>" width="900" preload="none">
+        <source src="<%= podcast.link %> " type="video/mp4" />
         <track label="English" kind="descriptions" default>
+      </video>
+      <p><%- podcast.summary %></p>
+      <% }) %>
     </div>
-
   </main>
-
   <footer>
     <%- include('../partials/footer'); %>
   </footer>
-
 </body>
 
 </html>

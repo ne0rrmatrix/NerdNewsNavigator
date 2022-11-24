@@ -1,0 +1,59 @@
+h1,
+h2,
+h6 {
+    border: 5px;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: justify-all;
+}
+
+p {
+    display: table;
+    height: fit-content;
+    width: fit-content;
+}
+
+span {
+    display: table;
+    height: 75px;
+    line-height: 75px;
+}
+
+footer {
+    margin-top: auto;
+}
+
+#show {
+    overflow-wrap: break-word;
+    height: auto;
+    width: auto;
+    line-height: auto;
+    text-align: justify-all;
+    overflow: hidden;
+    font-family: Tahoma, sans-serif;
+    display: table;
+    /*THAT DOES THE MAGIC*/
+    margin: auto;
+
+}
+
+#name {
+    block-size: auto;
+
+    height: auto;
+    line-height: auto;
+    text-align: center;
+    overflow: hidden;
+    width: auto;
+    font-family: Tahoma, sans-serif;
+    display: table;
+    /*THAT DOES THE MAGIC*/
+    margin: auto;
+    /* THE BORDER IS FOR TEST PURPOSES TO SEE WHAT'S HAPPENING WITH THE DIV*/
+}
+
+body {
+    padding-top: 50px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
