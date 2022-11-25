@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "engines": {
     "node": ">=10.0.0"
-},
+  },
   "description": "Watch Twit TV Podcasts",
   "main": "main.js",
   "extraFiles": [
@@ -27,7 +27,6 @@
     "electron-squirrel-startup": "^1.0.0",
     "express": "^4.18.2",
     "ffmpeg-static": "^5.1.0",
-    "jquery": "^3.6.1",
     "nodemon": "^2.0.20",
     "p-ratelimit": "^1.0.1",
     "rss-parser": "^3.12.0",

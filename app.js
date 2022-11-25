@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 const express = require('express');
 const { pRateLimit } = require('p-ratelimit');
 
@@ -23,16 +22,15 @@ const limit = pRateLimit({
 });
 
 const show = [];
-// eslint-disable-next-line prefer-const
-let showData = [];
-// eslint-disable-next-line prefer-const
-let podcast = [];
-// eslint-disable-next-line prefer-const
-let output = [];
+
+const showData = [];
+
+const podcast = [];
+
+const output = [];
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-app.use('/jquery', express.static(`${__dirname}/node_modules/jquery/dist/`));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ type: 'application/*+json' }));
 app.use('/static', express.static(path.join(__dirname, 'public')));
@@ -62,6 +60,37 @@ const twitVideo = [
   { title: 'https://feeds.twit.tv/mikah_video_hd.xml' },
 ];
 
+function getFilenameFromUrl(url) {
+  const { pathname } = new URL(url);
+  const index = pathname.lastIndexOf('/');
+  return pathname.substring(index + 1); // if index === -1 then index+1 will be 0
+}
+
+const createThumbnails = async (item, file, result) => {
+  try {
+    if (!fs.existsSync(file)) {
+      const out = path.join(__dirname, 'public/cache');
+      await limit(() => genThumbnail(item.guid, `${out}/${result}`, '1110x?', {
+        vf: 'select=gt(scene\\,0.5)', seek: '00:03.15', path: ffmpegPath,
+      }));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const setData = async (feed) => {
+  feed.items.forEach(async (item) => {
+    if (item.guid.includes('http')) {
+      let result = getFilenameFromUrl(item.guid);
+      result = path.parse(result).name;
+      result = `${result.toString()}.jpg`;
+      const file = `./public/cache/${result}`;
+      await createThumbnails(item, file, result);
+    }
+  });
+};
+
 const loadFeed = async (data) => {
   const feed = await parser.parseURL(data);
 
@@ -88,35 +117,10 @@ const loadFeed = async (data) => {
   await setData(feed);
 };
 
-const setData = async (feed) => {
-  feed.items.forEach(async (item) => {
-    if (item.guid.includes('http')) {
-      let result = getFilenameFromUrl(item.guid);
-      result = path.parse(result).name;
-      result = `${result.toString()}.jpg`;
-      const file = `./public/cache/${result}`;
-      await createThumbnails(item, file, result);
-    }
-  });
-};
-
 const loadData = async () => {
   twitVideo.forEach(async (element) => {
     await loadFeed(element.title);
   });
-};
-
-const createThumbnails = async (item, file, result) => {
-  try {
-    if (!fs.existsSync(file)) {
-      const out = path.join(__dirname, 'public/cache');
-      await limit(() => genThumbnail(item.guid, `${out}/${result}`, '1110x?', {
-        vf: 'select=gt(scene\\,0.5)', seek: '00:03.15', path: ffmpegPath,
-      }));
-    }
-  } catch (error) {
-    console.log(error);
-  }
 };
 
 loadData();
@@ -131,22 +135,6 @@ app.get('/Live', (req, res) => {
   res.render('pages/Live', {
   });
 });
-
-app.post('/', async (req, res) => {
-  const test = req.body.podcast;
-
-  const test2 = req.body.show;
-  if (req.body.podcast) {
-    getPodcast(test);
-  }
-  if (req.body.show) {
-    getShow(test2);
-  }
-
-  res.end('yes');
-});
-
-console.log('Server is listening on port 8080');
 const getPodcast = (test) => {
   output.length = 0;
 
@@ -170,7 +158,6 @@ const getPodcast = (test) => {
     });
   });
 };
-
 const getShow = (test2) => {
   podcast.length = 0;
   console.log(test2);
@@ -196,8 +183,18 @@ const getShow = (test2) => {
   });
 };
 
-function getFilenameFromUrl(url) {
-  const { pathname } = new URL(url);
-  const index = pathname.lastIndexOf('/');
-  return pathname.substring(index + 1); // if index === -1 then index+1 will be 0
-}
+app.post('/', async (req, res) => {
+  const test = req.body.podcast;
+
+  const test2 = req.body.show;
+  if (req.body.podcast) {
+    getPodcast(test);
+  }
+  if (req.body.show) {
+    getShow(test2);
+  }
+
+  res.end('yes');
+});
+
+console.log('Server is listening on port 8080');
