@@ -1,9 +1,7 @@
 /* eslint-disable no-use-before-define */
 const express = require('express');
 const { pRateLimit } = require('p-ratelimit');
-// const ffmpeg = require('ffmpeg-static');
 
-// const ffmpegPath = ('./node_modules/ffmpeg-static/ffmpeg.exe');
 const ffmpegPath = (`${__dirname}/node_modules/ffmpeg-static/ffmpeg.exe`);
 const fs = require('fs');
 const genThumbnail = require('simple-thumbnail');
@@ -19,9 +17,9 @@ const path = require('node:path');
 
 const limit = pRateLimit({
   interval: 1000, // 1000 ms == 1 second
-  rate: 25, // 30 API calls per interval
-  concurrency: 20, // no more than 10 running at once
-  maxDelay: 1200000, // an API call delayed > 2 sec is rejected
+  rate: 25, // 25 API calls per interval
+  concurrency: 20, // no more than 20 running at once
+  maxDelay: 1200000, // an API call delayed > 12 min is rejected
 });
 
 const show = [];

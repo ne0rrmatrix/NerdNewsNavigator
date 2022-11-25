@@ -1,6 +1,9 @@
 {
   "name": "twit-tv",
   "version": "0.1.1",
+  "engines": {
+    "node": ">=10.0.0"
+},
   "description": "Watch Twit TV Podcasts",
   "main": "main.js",
   "extraFiles": [
@@ -39,7 +42,8 @@
     "electron": "^21.3.0",
     "eslint": "^8.27.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.26.0"
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-node": "^11.1.0"
   },
   "repository": {
     "type": "git",
