@@ -1,9 +1,10 @@
 /* eslint-disable no-use-before-define */
 const express = require('express');
 const { pRateLimit } = require('p-ratelimit');
+// const ffmpeg = require('ffmpeg-static');
 
-const ffmpegPath = ('./node_modules/ffmpeg-static/ffmpeg.exe');
-
+// const ffmpegPath = ('./node_modules/ffmpeg-static/ffmpeg.exe');
+const ffmpegPath = (`${__dirname}/node_modules/ffmpeg-static/ffmpeg.exe`);
 const fs = require('fs');
 const genThumbnail = require('simple-thumbnail');
 
@@ -18,7 +19,7 @@ const path = require('node:path');
 
 const limit = pRateLimit({
   interval: 1000, // 1000 ms == 1 second
-  rate: 30, // 30 API calls per interval
+  rate: 25, // 30 API calls per interval
   concurrency: 20, // no more than 10 running at once
   maxDelay: 1200000, // an API call delayed > 2 sec is rejected
 });
@@ -69,14 +70,7 @@ const loadFeed = async (data) => {
   const name = {};
   name.title = feed.title;
   name.summary = feed.description;
-
-  let artwork = getFilenameFromUrl(feed.image.url);
-  artwork = path.parse(artwork).name;
-  artwork = `${artwork.toString()}.jpg`;
-
-  const files = `/static/cache/album_art/${artwork}`;
-
-  name.artwork = files;
+  name.artwork = feed.image.url;
   name.podcast = data;
 
   showData.push(name);
@@ -86,7 +80,7 @@ const loadFeed = async (data) => {
       name: name.title,
       title: item.title,
       link: item.guid,
-      image: artwork,
+      image: feed.image.url,
       url: data,
       content: item.content,
     };
@@ -117,7 +111,8 @@ const loadData = async () => {
 const createThumbnails = async (item, file, result) => {
   try {
     if (!fs.existsSync(file)) {
-      await limit(() => genThumbnail(item.guid, `./public/cache/${result}`, '1110x?', {
+      const out = path.join(__dirname, 'public/cache');
+      await limit(() => genThumbnail(item.guid, `${out}/${result}`, '1110x?', {
         vf: 'select=gt(scene\\,0.5)', seek: '00:03.15', path: ffmpegPath,
       }));
     }
