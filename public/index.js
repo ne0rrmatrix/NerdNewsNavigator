@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 const getShow = (show) => {
   show.forEach((element) => {
-    $(element).click(() => {
+    $(element).on('click', () => {
       $.post('http://localhost:8080/', {
         show: element.dataset.show,
       }, (result) => {
@@ -15,7 +15,7 @@ const getShow = (show) => {
 };
 const getPodcast = (data) => {
   data.forEach((element) => {
-    $(element).click(() => {
+    $(element).on('click', () => {
       $.post('http://localhost:8080/', {
         podcast: element.dataset.test,
       }, (answer) => {

@@ -1,14 +1,9 @@
 /* eslint-disable no-use-before-define */
 const express = require('express');
-//* const jsdom = require('jsdom');
-//* const ffmpeg = require('ffmpeg-static');
-//* const https = require('https');
 const { pRateLimit } = require('p-ratelimit');
 
 const ffmpegPath = ('./node_modules/ffmpeg-static/ffmpeg.exe');
 
-//* const dom = new jsdom.JSDOM('');
-//* const jquery = require('jquery')(dom.window);
 const fs = require('fs');
 const genThumbnail = require('simple-thumbnail');
 
@@ -20,9 +15,6 @@ const Parser = require('rss-parser');
 const parser = new Parser();
 
 const path = require('node:path');
-//* const { timeStamp } = require('console');
-
-// const fullPath = path.join(__dirname, '/views/');
 
 const limit = pRateLimit({
   interval: 1000, // 1000 ms == 1 second
