@@ -3,6 +3,10 @@
   "version": "0.1.1",
   "description": "Watch Twit TV Podcasts",
   "main": "main.js",
+  "extraFiles": [
+    "views",
+    "public"
+  ],
   "scripts": {
     "lint:ejs": "ejslint  views/pages/*.ejs",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -37,5 +41,13 @@
     "eslint": "^8.27.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ne0rrmatrix/twit-tv-player.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ne0rrmatrix/twit-tv-player/issues"
+  },
+  "homepage": "https://github.com/ne0rrmatrix/twit-tv-player#readme"
 }

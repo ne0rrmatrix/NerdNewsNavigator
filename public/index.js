@@ -7,7 +7,7 @@ const getShow = (show) => {
       }, (result) => {
         if (result === 'yes') {
           console.log('sucess!');
-          window.location.href = '/pages/player';
+          window.location.href = '/player';
         }
       });
     });
@@ -21,7 +21,7 @@ const getPodcast = (data) => {
       }, (answer) => {
         if (answer === 'yes') {
           console.log('sucess!');
-          window.location.href = '/pages/show';
+          window.location.href = '/show';
         }
       });
     });

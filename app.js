@@ -22,7 +22,7 @@ const parser = new Parser();
 const path = require('node:path');
 //* const { timeStamp } = require('console');
 
-const fullPath = path.join(__dirname, '/views/');
+// const fullPath = path.join(__dirname, '/views/');
 
 const limit = pRateLimit({
   interval: 1000, // 1000 ms == 1 second
@@ -40,10 +40,11 @@ let podcast = [];
 let output = [];
 
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 app.use('/jquery', express.static(`${__dirname}/node_modules/jquery/dist/`));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ type: 'application/*+json' }));
-app.use(express.static(fullPath));
+app.use('/static', express.static(path.join(__dirname, 'public')));
 app.listen(8080);
 
 const twitVideo = [
@@ -81,7 +82,7 @@ const loadFeed = async (data) => {
   artwork = path.parse(artwork).name;
   artwork = `${artwork.toString()}.jpg`;
 
-  const files = `./pages/cache/album_art/${artwork}`;
+  const files = `/static/cache/album_art/${artwork}`;
 
   name.artwork = files;
   name.podcast = data;
@@ -109,7 +110,7 @@ const setData = async (feed) => {
       let result = getFilenameFromUrl(item.guid);
       result = path.parse(result).name;
       result = `${result.toString()}.jpg`;
-      const file = `./views/pages/cache/${result}`;
+      const file = `./public/cache/${result}`;
       await createThumbnails(item, file, result);
     }
   });
@@ -124,7 +125,7 @@ const loadData = async () => {
 const createThumbnails = async (item, file, result) => {
   try {
     if (!fs.existsSync(file)) {
-      await limit(() => genThumbnail(item.guid, `./views/pages/cache/${result}`, '1110x?', {
+      await limit(() => genThumbnail(item.guid, `./public/cache/${result}`, '1110x?', {
         vf: 'select=gt(scene\\,0.5)', seek: '00:03.15', path: ffmpegPath,
       }));
     }
@@ -178,7 +179,7 @@ const getPodcast = (test) => {
     }
   });
 
-  app.get('/pages/show', (request, response) => {
+  app.get('/show', (request, response) => {
     response.render('pages/show', {
       output, test,
     });
@@ -203,7 +204,7 @@ const getShow = (test2) => {
     }
   });
 
-  app.get('/pages/player', (reqs, rese) => {
+  app.get('/player', (reqs, rese) => {
     rese.render('pages/player', {
       podcast,
     });
