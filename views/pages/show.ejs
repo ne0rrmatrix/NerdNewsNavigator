@@ -8,6 +8,7 @@
 <body>
   <header>
     <%- include('../partials/header'); %>
+    <script src="/static/show.js"></script>
   </header>
   <div class="containter-fluid">
     <% let i=0 %>
@@ -20,7 +21,7 @@
           <h6> <%= output.title %> </h6>
         </span>
         <picture>
-          <img id="images" data-show="<%= output.link %>" img loading="lazy" src="/static/cache/<%= output.webm %>" width="540" class="img-fluid img-thumbnail" alt="Show image">
+          <img id="images" data-show="<%= output.link %>" loading="lazy" src="/static/cache/<%= output.webm %>" width="540" onerror="this.onerror=null;this.src='<%= output.image %>';" class="img-fluid img-thumbnail" alt="Show image">
       </picture>
           <% if (i <=3) { i +=1 %>
           <% } %>

@@ -29,6 +29,8 @@ const podcast = [];
 
 const output = [];
 
+let exists = false;
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -73,19 +75,24 @@ const createThumbnails = async (item, file, result) => {
       await limit(() => genThumbnail(item.guid, `${out}/${result}`, '1110x?', {
         vf: 'select=gt(scene\\,0.5)', seek: '00:03.15', path: ffmpegPath,
       }));
+    } else {
+      exists = true;
     }
   } catch (error) {
     console.log(error);
   }
 };
 
-const setData = async (feed) => {
+const setData = async (data) => {
+  const feed = await parser.parseURL(data);
+
   feed.items.forEach(async (item) => {
+    exists = false;
     if (item.guid.includes('http')) {
       let result = getFilenameFromUrl(item.guid);
       result = path.parse(result).name;
       result = `${result.toString()}.jpg`;
-      const file = `./public/cache/${result}`;
+      const file = path.join(__dirname, `public/cache/${result}`);
       await createThumbnails(item, file, result);
     }
   });
@@ -113,29 +120,20 @@ const loadFeed = async (data) => {
     };
     show.push(shows);
   });
-
-  await setData(feed);
 };
 
-const loadData = async () => {
+const loadPodcasts = async () => {
   twitVideo.forEach(async (element) => {
     await loadFeed(element.title);
   });
 };
-
-loadData();
-
-app.get('/', (req, res) => {
-  res.render('pages/index', {
-    showData,
+const loadShows = async () => {
+  twitVideo.forEach(async (element) => {
+    await setData(element.title);
   });
-});
+};
 
-app.get('/Live', (req, res) => {
-  res.render('pages/Live', {
-  });
-});
-const getPodcast = (test) => {
+const getPodcast = async (test) => {
   output.length = 0;
 
   show.forEach((element) => {
@@ -148,20 +146,13 @@ const getPodcast = (test) => {
         link: element.link,
         webm: result,
         content: element.content,
+        image: element.image,
       });
     }
   });
-
-  app.get('/show', (request, response) => {
-    response.render('pages/show', {
-      output, test,
-    });
-  });
 };
-const getShow = (test2) => {
+const getShow = async (test2) => {
   podcast.length = 0;
-  console.log(test2);
-
   output.forEach((element) => {
     if (element.link === test2) {
       let result = getFilenameFromUrl(element.link);
@@ -172,29 +163,55 @@ const getShow = (test2) => {
         link: element.link,
         webm: result,
         summary: element.content,
+        image: element.image,
       });
     }
   });
 
-  app.get('/player', (reqs, rese) => {
-    rese.render('pages/player', {
+  app.get('/player', (req, res) => {
+    res.render('pages/player', {
       podcast,
     });
   });
 };
+const appSetPodcast = (test) => {
+  app.get('/show', async (request, res) => {
+    res.render('pages/show', {
+      output, test,
+    });
+  });
+};
+const appGetPodcast = async (test) => {
+  await getPodcast(test);
+  appSetPodcast(test);
+};
 
+loadPodcasts();
+loadShows();
 app.post('/', async (req, res) => {
   const test = req.body.podcast;
-
   const test2 = req.body.show;
+
   if (req.body.podcast) {
-    getPodcast(test);
-  }
-  if (req.body.show) {
-    getShow(test2);
+    await appGetPodcast(test);
+    res.end('yes');
   }
 
-  res.end('yes');
+  if (req.body.show) {
+    await getShow(test2);
+    res.end('yes');
+  }
+});
+
+app.get('/', async (req, res) => {
+  res.render('pages/index', {
+    showData,
+  });
+});
+
+app.get('/Live', (req, res) => {
+  res.render('pages/Live', {
+  });
 });
 
 console.log('Server is listening on port 8080');
