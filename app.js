@@ -29,8 +29,6 @@ const podcast = [];
 
 const output = [];
 
-let exists = false;
-
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -76,7 +74,7 @@ const createThumbnails = async (item, file, result) => {
         vf: 'select=gt(scene\\,0.5)', seek: '00:03.15', path: ffmpegPath,
       }));
     } else {
-      exists = true;
+      console.log('');
     }
   } catch (error) {
     console.log(error);
@@ -87,7 +85,6 @@ const setData = async (data) => {
   const feed = await parser.parseURL(data);
 
   feed.items.forEach(async (item) => {
-    exists = false;
     if (item.guid.includes('http')) {
       let result = getFilenameFromUrl(item.guid);
       result = path.parse(result).name;
