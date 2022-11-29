@@ -130,7 +130,6 @@ public/cache
 .pnp.*
 
 # eslint
-.eslintrc.js
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
