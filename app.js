@@ -8,45 +8,20 @@ const app = express();
 const Parser = require('rss-parser');
 
 const parser = new Parser();
+const fs = require('fs');
 
 const show = [];
-
 const showData = [];
-
 const podcast = [];
-
 const output = [];
-
+const twitVideo = [];
+const location = path.join(__dirname, 'public');
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ type: 'application/*+json' }));
 app.use('/static', express.static(path.join(__dirname, 'public')));
 app.listen(8080);
-
-const twitVideo = [
-  { title: 'https://feeds.twit.tv/aaa_video_hd.xml' },
-  { title: 'https://feeds.twit.tv/floss_video_hd.xml' },
-  { title: 'https://feeds.twit.tv/hom_video_hd.xml' },
-  { title: 'https://feeds.twit.tv/hop_video_hd.xml' },
-  { title: 'https://feeds.twit.tv/howin_video_hd.xml' },
-  { title: 'https://feeds.twit.tv/ipad_video_hd.xml' },
-  { title: 'https://feeds.twit.tv/mbw_video_hd.xml' },
-  { title: 'https://feeds.twit.tv/sn_video_hd.xml' },
-  { title: 'https://feeds.twit.tv/ttg_video_hd.xml' },
-  { title: 'https://feeds.twit.tv/tnw_video_hd.xml' },
-  { title: 'https://feeds.twit.tv/twiet_video_hd.xml' },
-  { title: 'https://feeds.twit.tv/twig_video_hd.xml' },
-  { title: 'https://feeds.twit.tv/twit_video_hd.xml' },
-  { title: 'https://feeds.twit.tv/events_video_hd.xml' },
-  { title: 'https://feeds.twit.tv/specials_video_hd.xml' },
-  { title: 'https://feeds.twit.tv/bits_video_hd.xml' },
-  { title: 'https://feeds.twit.tv/throwback_video_large.xml' },
-  { title: 'https://feeds.twit.tv/leo_video_hd.xml' },
-  { title: 'https://feeds.twit.tv/ant_video_hd.xml' },
-  { title: 'https://feeds.twit.tv/jason_video_hd.xml' },
-  { title: 'https://feeds.twit.tv/mikah_video_hd.xml' },
-];
 
 const loadFeed = async (data) => {
   const feed = await parser.parseURL(data);
@@ -93,6 +68,7 @@ const getPodcast = async (test) => {
     }
   });
 };
+
 const getShow = async (test2) => {
   podcast.length = 0;
   output.forEach((element) => {
@@ -112,6 +88,41 @@ const getShow = async (test2) => {
     });
   });
 };
+
+const loadfile = () => {
+  const twit = '[{ "title": "https://feeds.twit.tv/aaa_video_hd.xml" },{ "title": "https://feeds.twit.tv/floss_video_hd.xml" },{ "title": "https://feeds.twit.tv/hom_video_hd.xml" },{ "title": "https://feeds.twit.tv/hop_video_hd.xml" },{ "title": "https://feeds.twit.tv/howin_video_hd.xml" },{ "title": "https://feeds.twit.tv/ipad_video_hd.xml" },{ "title": "https://feeds.twit.tv/mbw_video_hd.xml" },{ "title": "https://feeds.twit.tv/sn_video_hd.xml" },{ "title": "https://feeds.twit.tv/ttg_video_hd.xml" },{ "title": "https://feeds.twit.tv/tnw_video_hd.xml" },{ "title": "https://feeds.twit.tv/twiet_video_hd.xml" },{ "title": "https://feeds.twit.tv/twig_video_hd.xml" },{ "title": "https://feeds.twit.tv/twit_video_hd.xml" },{ "title": "https://feeds.twit.tv/events_video_hd.xml" },{ "title": "https://feeds.twit.tv/specials_video_hd.xml" },{ "title": "https://feeds.twit.tv/bits_video_hd.xml" },{ "title": "https://feeds.twit.tv/throwback_video_large.xml" },{ "title": "https://feeds.twit.tv/leo_video_hd.xml" },{ "title": "https://feeds.twit.tv/ant_video_hd.xml" },{ "title": "https://feeds.twit.tv/jason_video_hd.xml" },{ "title": "https://feeds.twit.tv/mikah_video_hd.xml" }]';
+  //* parse json
+  const jsonObj = JSON.parse(twit);
+
+  //* stringify JSON Object
+  const jsonContent = JSON.stringify(jsonObj);
+
+  if (!fs.existsSync(`${location}/output.json`)) {
+    fs.writeFile(`${location}/output.json`, jsonContent, 'utf-8', (err) => {
+      if (err) {
+        console.log('An error has occurred while writing JSON Object to file.');
+        return console.log(err);
+      }
+      console.log('JSON file has been saved.');
+      return (err);
+    });
+  }
+  setTimeout(() => {
+    if (fs.existsSync(`${location}/output.json`)) {
+      fs.readFile(`${location}/output.json`, (err, data) => {
+        if (err) throw err;
+        const video = JSON.parse(data);
+        video.forEach(async (element) => {
+          twitVideo.push(element);
+        });
+        loadPodcasts();
+      });
+    }
+  }, 1000);
+};
+
+loadfile();
+
 const appSetPodcast = (test) => {
   app.get('/show', async (request, res) => {
     res.render('pages/show', {
@@ -119,13 +130,12 @@ const appSetPodcast = (test) => {
     });
   });
 };
+
 const appGetPodcast = async (test) => {
   await getPodcast(test);
   appSetPodcast(test);
 };
 
-loadPodcasts();
-//* loadShows();
 app.post('/', async (req, res) => {
   const test = req.body.podcast;
   const test2 = req.body.show;
