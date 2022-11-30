@@ -1,18 +1,17 @@
-const express = require('express');
-const { pRateLimit } = require('p-ratelimit');
-
-const ffmpegPath = (`${__dirname}/node_modules/ffmpeg-static/ffmpeg.exe`);
-const fs = require('fs');
 const genThumbnail = require('simple-thumbnail');
+const bodyParser = require('body-parser');
+const path = require('node:path');
+const { pRateLimit } = require('p-ratelimit');
+const fs = require('fs');
+const express = require('express');
 
 const app = express();
-const bodyParser = require('body-parser');
 
 const Parser = require('rss-parser');
 
 const parser = new Parser();
 
-const path = require('node:path');
+const ffmpegPath = (`${__dirname}/node_modules/ffmpeg-static/ffmpeg.exe`);
 
 const limit = pRateLimit({
   interval: 1000, // 1000 ms == 1 second
