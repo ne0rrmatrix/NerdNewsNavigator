@@ -1,13 +1,12 @@
-/* eslint-disable no-undef */
 const getShow = (show) => {
   show.forEach((element) => {
-    $(element).click(() => {
+    $(element).on('click', () => {
       $.post('http://localhost:8080/', {
         show: element.dataset.show,
       }, (result) => {
         if (result === 'yes') {
           console.log('sucess!');
-          window.location.href = '/pages/player';
+          window.location.href = '/player';
         }
       });
     });
@@ -15,13 +14,13 @@ const getShow = (show) => {
 };
 const getPodcast = (data) => {
   data.forEach((element) => {
-    $(element).click(() => {
+    $(element).on('click', () => {
       $.post('http://localhost:8080/', {
         podcast: element.dataset.test,
       }, (answer) => {
         if (answer === 'yes') {
           console.log('sucess!');
-          window.location.href = '/pages/show';
+          window.location.href = '/show';
         }
       });
     });

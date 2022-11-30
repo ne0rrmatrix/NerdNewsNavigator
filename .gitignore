@@ -90,7 +90,7 @@ out
 # Nuxt.js build / generate output
 .nuxt
 dist
-
+public/cache
 # Gatsby files
 .cache/
 # Comment in the public line in if your project uses Gatsby and not Next.js
@@ -130,7 +130,6 @@ dist
 .pnp.*
 
 # eslint
-.eslintrc.js
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json

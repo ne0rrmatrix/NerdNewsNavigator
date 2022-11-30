@@ -1,49 +1,38 @@
-/* eslint-disable no-use-before-define */
-const express = require('express');
-//* const jsdom = require('jsdom');
-//* const ffmpeg = require('ffmpeg-static');
-//* const https = require('https');
-const { pRateLimit } = require('p-ratelimit');
-
-const ffmpegPath = ('./node_modules/ffmpeg-static/ffmpeg.exe');
-
-//* const dom = new jsdom.JSDOM('');
-//* const jquery = require('jquery')(dom.window);
-const fs = require('fs');
 const genThumbnail = require('simple-thumbnail');
+const bodyParser = require('body-parser');
+const path = require('node:path');
+const { pRateLimit } = require('p-ratelimit');
+const fs = require('fs');
+const express = require('express');
 
 const app = express();
-const bodyParser = require('body-parser');
 
 const Parser = require('rss-parser');
 
 const parser = new Parser();
 
-const path = require('node:path');
-//* const { timeStamp } = require('console');
-
-const fullPath = path.join(__dirname, '/views/');
+const ffmpegPath = (`${__dirname}/node_modules/ffmpeg-static/ffmpeg.exe`);
 
 const limit = pRateLimit({
   interval: 1000, // 1000 ms == 1 second
-  rate: 30, // 30 API calls per interval
-  concurrency: 20, // no more than 10 running at once
-  maxDelay: 1200000, // an API call delayed > 2 sec is rejected
+  rate: 25, // 25 API calls per interval
+  concurrency: 20, // no more than 20 running at once
+  maxDelay: 1200000, // an API call delayed > 12 min is rejected
 });
 
 const show = [];
-// eslint-disable-next-line prefer-const
-let showData = [];
-// eslint-disable-next-line prefer-const
-let podcast = [];
-// eslint-disable-next-line prefer-const
-let output = [];
+
+const showData = [];
+
+const podcast = [];
+
+const output = [];
 
 app.set('view engine', 'ejs');
-app.use('/jquery', express.static(`${__dirname}/node_modules/jquery/dist/`));
+app.set('views', path.join(__dirname, 'views'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ type: 'application/*+json' }));
-app.use(express.static(fullPath));
+app.use('/static', express.static(path.join(__dirname, 'public')));
 app.listen(8080);
 
 const twitVideo = [
@@ -70,20 +59,48 @@ const twitVideo = [
   { title: 'https://feeds.twit.tv/mikah_video_hd.xml' },
 ];
 
+function getFilenameFromUrl(url) {
+  const { pathname } = new URL(url);
+  const index = pathname.lastIndexOf('/');
+  return pathname.substring(index + 1); // if index === -1 then index+1 will be 0
+}
+
+const createThumbnails = async (item, file, result) => {
+  try {
+    if (!fs.existsSync(file)) {
+      const out = path.join(__dirname, 'public/cache');
+      await limit(() => genThumbnail(item.guid, `${out}/${result}`, '1110x?', {
+        vf: 'select=gt(scene\\,0.5)', seek: '00:03.15', path: ffmpegPath,
+      }));
+    } else {
+      console.log('');
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const setData = async (data) => {
+  const feed = await parser.parseURL(data);
+
+  feed.items.forEach(async (item) => {
+    if (item.guid.includes('http')) {
+      let result = getFilenameFromUrl(item.guid);
+      result = path.parse(result).name;
+      result = `${result.toString()}.jpg`;
+      const file = path.join(__dirname, `public/cache/${result}`);
+      await createThumbnails(item, file, result);
+    }
+  });
+};
+
 const loadFeed = async (data) => {
   const feed = await parser.parseURL(data);
 
   const name = {};
   name.title = feed.title;
   name.summary = feed.description;
-
-  let artwork = getFilenameFromUrl(feed.image.url);
-  artwork = path.parse(artwork).name;
-  artwork = `${artwork.toString()}.jpg`;
-
-  const files = `./pages/cache/album_art/${artwork}`;
-
-  name.artwork = files;
+  name.artwork = feed.image.url;
   name.podcast = data;
 
   showData.push(name);
@@ -93,75 +110,26 @@ const loadFeed = async (data) => {
       name: name.title,
       title: item.title,
       link: item.guid,
-      image: artwork,
+      image: feed.image.url,
       url: data,
       content: item.content,
     };
     show.push(shows);
   });
-
-  await setData(feed);
 };
 
-const setData = async (feed) => {
-  feed.items.forEach(async (item) => {
-    if (item.guid.includes('http')) {
-      let result = getFilenameFromUrl(item.guid);
-      result = path.parse(result).name;
-      result = `${result.toString()}.jpg`;
-      const file = `./views/pages/cache/${result}`;
-      await createThumbnails(item, file, result);
-    }
-  });
-};
-
-const loadData = async () => {
+const loadPodcasts = async () => {
   twitVideo.forEach(async (element) => {
     await loadFeed(element.title);
   });
 };
-
-const createThumbnails = async (item, file, result) => {
-  try {
-    if (!fs.existsSync(file)) {
-      await limit(() => genThumbnail(item.guid, `./views/pages/cache/${result}`, '1110x?', {
-        vf: 'select=gt(scene\\,0.5)', seek: '00:03.15', path: ffmpegPath,
-      }));
-    }
-  } catch (error) {
-    console.log(error);
-  }
+const loadShows = async () => {
+  twitVideo.forEach(async (element) => {
+    await setData(element.title);
+  });
 };
 
-loadData();
-
-app.get('/', (req, res) => {
-  res.render('pages/index', {
-    showData,
-  });
-});
-
-app.get('/Live', (req, res) => {
-  res.render('pages/Live', {
-  });
-});
-
-app.post('/', async (req, res) => {
-  const test = req.body.podcast;
-
-  const test2 = req.body.show;
-  if (req.body.podcast) {
-    getPodcast(test);
-  }
-  if (req.body.show) {
-    getShow(test2);
-  }
-
-  res.end('yes');
-});
-
-console.log('Server is listening on port 8080');
-const getPodcast = (test) => {
+const getPodcast = async (test) => {
   output.length = 0;
 
   show.forEach((element) => {
@@ -174,21 +142,13 @@ const getPodcast = (test) => {
         link: element.link,
         webm: result,
         content: element.content,
+        image: element.image,
       });
     }
   });
-
-  app.get('/pages/show', (request, response) => {
-    response.render('pages/show', {
-      output, test,
-    });
-  });
 };
-
-const getShow = (test2) => {
+const getShow = async (test2) => {
   podcast.length = 0;
-  console.log(test2);
-
   output.forEach((element) => {
     if (element.link === test2) {
       let result = getFilenameFromUrl(element.link);
@@ -199,19 +159,55 @@ const getShow = (test2) => {
         link: element.link,
         webm: result,
         summary: element.content,
+        image: element.image,
       });
     }
   });
 
-  app.get('/pages/player', (reqs, rese) => {
-    rese.render('pages/player', {
+  app.get('/player', (req, res) => {
+    res.render('pages/player', {
       podcast,
     });
   });
 };
+const appSetPodcast = (test) => {
+  app.get('/show', async (request, res) => {
+    res.render('pages/show', {
+      output, test,
+    });
+  });
+};
+const appGetPodcast = async (test) => {
+  await getPodcast(test);
+  appSetPodcast(test);
+};
 
-function getFilenameFromUrl(url) {
-  const { pathname } = new URL(url);
-  const index = pathname.lastIndexOf('/');
-  return pathname.substring(index + 1); // if index === -1 then index+1 will be 0
-}
+loadPodcasts();
+loadShows();
+app.post('/', async (req, res) => {
+  const test = req.body.podcast;
+  const test2 = req.body.show;
+
+  if (req.body.podcast) {
+    await appGetPodcast(test);
+    res.end('yes');
+  }
+
+  if (req.body.show) {
+    await getShow(test2);
+    res.end('yes');
+  }
+});
+
+app.get('/', async (req, res) => {
+  res.render('pages/index', {
+    showData,
+  });
+});
+
+app.get('/Live', (req, res) => {
+  res.render('pages/Live', {
+  });
+});
+
+console.log('Server is listening on port 8080');
