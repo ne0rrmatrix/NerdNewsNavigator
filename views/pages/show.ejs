@@ -21,15 +21,15 @@
           <h6> <%= output.title %> </h6>
         </span>
         <picture>
-          <img id="images" data-show="<%= output.link %>" loading="lazy" src="/static/cache/<%= output.webm %>" width="540" onerror="this.onerror=null;this.src='<%= output.image %>';" class="img-fluid img-thumbnail" alt="Show image">
-      </picture>
-          <% if (i <=3) { i +=1 %>
-          <% } %>
-          <% if (i < 3) { %>
+          <img id="images" data-show="<%= output.link %>" loading="lazy" src="<%= output.thumbnail %>" width="600" onerror="this.onerror=null;this.src='<%= output.image %>';" class="img-fluid img-thumbnail" alt="Show image">
+        </picture>
+        <% if (i <=3) { i +=1 %>
+        <% } %>
+        <% if (i < 3) { %>
       </div>
       <div class=" col-lg-4 col-md-4 col-sm-4 col-4">
-          <% } %>
-          <% if (i==3) { i=0 %>
+        <% } %>
+        <% if (i==3) { i=0 %>
       </div>
     </div>
     <% } %>

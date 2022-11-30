@@ -1,6 +1,6 @@
 {
   "name": "twit-tv-player",
-  "version": "0.1.1",
+  "version": "0.0.2",
   "engines": {
     "node": ">=10.0.0"
   },
@@ -25,11 +25,8 @@
     "ejs": "^3.1.8",
     "electron-squirrel-startup": "^1.0.0",
     "express": "^4.18.2",
-    "ffmpeg-static": "^5.1.0",
     "nodemon": "^2.0.20",
-    "p-ratelimit": "^1.0.1",
-    "rss-parser": "^3.12.0",
-    "simple-thumbnail": "^1.6.5"
+    "rss-parser": "^3.12.0"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.3",

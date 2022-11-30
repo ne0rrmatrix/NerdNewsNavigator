@@ -1,8 +1,6 @@
-const genThumbnail = require('simple-thumbnail');
 const bodyParser = require('body-parser');
 const path = require('node:path');
-const { pRateLimit } = require('p-ratelimit');
-const fs = require('fs');
+
 const express = require('express');
 
 const app = express();
@@ -10,15 +8,6 @@ const app = express();
 const Parser = require('rss-parser');
 
 const parser = new Parser();
-
-const ffmpegPath = (`${__dirname}/node_modules/ffmpeg-static/ffmpeg.exe`);
-
-const limit = pRateLimit({
-  interval: 1000, // 1000 ms == 1 second
-  rate: 25, // 25 API calls per interval
-  concurrency: 20, // no more than 20 running at once
-  maxDelay: 1200000, // an API call delayed > 12 min is rejected
-});
 
 const show = [];
 
@@ -59,41 +48,6 @@ const twitVideo = [
   { title: 'https://feeds.twit.tv/mikah_video_hd.xml' },
 ];
 
-function getFilenameFromUrl(url) {
-  const { pathname } = new URL(url);
-  const index = pathname.lastIndexOf('/');
-  return pathname.substring(index + 1); // if index === -1 then index+1 will be 0
-}
-
-const createThumbnails = async (item, file, result) => {
-  try {
-    if (!fs.existsSync(file)) {
-      const out = path.join(__dirname, 'public/cache');
-      await limit(() => genThumbnail(item.guid, `${out}/${result}`, '1110x?', {
-        vf: 'select=gt(scene\\,0.5)', seek: '00:03.15', path: ffmpegPath,
-      }));
-    } else {
-      console.log('');
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const setData = async (data) => {
-  const feed = await parser.parseURL(data);
-
-  feed.items.forEach(async (item) => {
-    if (item.guid.includes('http')) {
-      let result = getFilenameFromUrl(item.guid);
-      result = path.parse(result).name;
-      result = `${result.toString()}.jpg`;
-      const file = path.join(__dirname, `public/cache/${result}`);
-      await createThumbnails(item, file, result);
-    }
-  });
-};
-
 const loadFeed = async (data) => {
   const feed = await parser.parseURL(data);
 
@@ -113,6 +67,7 @@ const loadFeed = async (data) => {
       image: feed.image.url,
       url: data,
       content: item.content,
+      thumbnail: item.itunes.image,
     };
     show.push(shows);
   });
@@ -123,26 +78,17 @@ const loadPodcasts = async () => {
     await loadFeed(element.title);
   });
 };
-const loadShows = async () => {
-  twitVideo.forEach(async (element) => {
-    await setData(element.title);
-  });
-};
 
 const getPodcast = async (test) => {
   output.length = 0;
 
   show.forEach((element) => {
     if (element.url === test) {
-      let result = getFilenameFromUrl(element.link);
-      result = path.parse(result).name;
-      result = `${result.toString()}.jpg`;
       output.push({
         title: element.title,
         link: element.link,
-        webm: result,
         content: element.content,
-        image: element.image,
+        thumbnail: element.thumbnail,
       });
     }
   });
@@ -151,15 +97,11 @@ const getShow = async (test2) => {
   podcast.length = 0;
   output.forEach((element) => {
     if (element.link === test2) {
-      let result = getFilenameFromUrl(element.link);
-      result = path.parse(result).name;
-      result = `${result.toString()}.jpg`;
       podcast.push({
         title: element.title,
         link: element.link,
-        webm: result,
         summary: element.content,
-        image: element.image,
+        thumbnail: element.thumbnail,
       });
     }
   });
@@ -183,7 +125,7 @@ const appGetPodcast = async (test) => {
 };
 
 loadPodcasts();
-loadShows();
+//* loadShows();
 app.post('/', async (req, res) => {
   const test = req.body.podcast;
   const test2 = req.body.show;
