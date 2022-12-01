@@ -88,15 +88,7 @@ const getShow = async (test2) => {
     });
   });
 };
-
-const loadfile = () => {
-  const twit = '[{ "title": "https://feeds.twit.tv/aaa_video_hd.xml" },{ "title": "https://feeds.twit.tv/floss_video_hd.xml" },{ "title": "https://feeds.twit.tv/hom_video_hd.xml" },{ "title": "https://feeds.twit.tv/hop_video_hd.xml" },{ "title": "https://feeds.twit.tv/howin_video_hd.xml" },{ "title": "https://feeds.twit.tv/ipad_video_hd.xml" },{ "title": "https://feeds.twit.tv/mbw_video_hd.xml" },{ "title": "https://feeds.twit.tv/sn_video_hd.xml" },{ "title": "https://feeds.twit.tv/ttg_video_hd.xml" },{ "title": "https://feeds.twit.tv/tnw_video_hd.xml" },{ "title": "https://feeds.twit.tv/twiet_video_hd.xml" },{ "title": "https://feeds.twit.tv/twig_video_hd.xml" },{ "title": "https://feeds.twit.tv/twit_video_hd.xml" },{ "title": "https://feeds.twit.tv/events_video_hd.xml" },{ "title": "https://feeds.twit.tv/specials_video_hd.xml" },{ "title": "https://feeds.twit.tv/bits_video_hd.xml" },{ "title": "https://feeds.twit.tv/throwback_video_large.xml" },{ "title": "https://feeds.twit.tv/leo_video_hd.xml" },{ "title": "https://feeds.twit.tv/ant_video_hd.xml" },{ "title": "https://feeds.twit.tv/jason_video_hd.xml" },{ "title": "https://feeds.twit.tv/mikah_video_hd.xml" }]';
-  //* parse json
-  const jsonObj = JSON.parse(twit);
-
-  //* stringify JSON Object
-  const jsonContent = JSON.stringify(jsonObj);
-
+const createFile = (jsonContent) => {
   if (!fs.existsSync(`${location}/output.json`)) {
     fs.writeFile(`${location}/output.json`, jsonContent, 'utf-8', (err) => {
       if (err) {
@@ -107,6 +99,8 @@ const loadfile = () => {
       return (err);
     });
   }
+};
+const readFile = () => {
   setTimeout(() => {
     if (fs.existsSync(`${location}/output.json`)) {
       fs.readFile(`${location}/output.json`, (err, data) => {
@@ -119,6 +113,17 @@ const loadfile = () => {
       });
     }
   }, 1000);
+};
+const loadfile = () => {
+  const twit = '[{ "title": "https://feeds.twit.tv/aaa_video_hd.xml" },{ "title": "https://feeds.twit.tv/floss_video_hd.xml" },{ "title": "https://feeds.twit.tv/hom_video_hd.xml" },{ "title": "https://feeds.twit.tv/hop_video_hd.xml" },{ "title": "https://feeds.twit.tv/howin_video_hd.xml" },{ "title": "https://feeds.twit.tv/ipad_video_hd.xml" },{ "title": "https://feeds.twit.tv/mbw_video_hd.xml" },{ "title": "https://feeds.twit.tv/sn_video_hd.xml" },{ "title": "https://feeds.twit.tv/ttg_video_hd.xml" },{ "title": "https://feeds.twit.tv/tnw_video_hd.xml" },{ "title": "https://feeds.twit.tv/twiet_video_hd.xml" },{ "title": "https://feeds.twit.tv/twig_video_hd.xml" },{ "title": "https://feeds.twit.tv/twit_video_hd.xml" },{ "title": "https://feeds.twit.tv/events_video_hd.xml" },{ "title": "https://feeds.twit.tv/specials_video_hd.xml" },{ "title": "https://feeds.twit.tv/bits_video_hd.xml" },{ "title": "https://feeds.twit.tv/throwback_video_large.xml" },{ "title": "https://feeds.twit.tv/leo_video_hd.xml" },{ "title": "https://feeds.twit.tv/ant_video_hd.xml" },{ "title": "https://feeds.twit.tv/jason_video_hd.xml" },{ "title": "https://feeds.twit.tv/mikah_video_hd.xml" }]';
+  //* parse json
+  const jsonObj = JSON.parse(twit);
+
+  //* stringify JSON Object
+  const jsonContent = JSON.stringify(jsonObj);
+
+  createFile(jsonContent);
+  readFile();
 };
 
 loadfile();
