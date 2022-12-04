@@ -19,7 +19,7 @@ jobs:
       with:
         version: 14.x
     - name: npm install and release
-      run: npm run release
+      run: npm run make
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
         NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
