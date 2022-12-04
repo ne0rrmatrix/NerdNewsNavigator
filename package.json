@@ -1,6 +1,8 @@
 {
   "name": "twit-tv-player",
-  "version": "0.0.4",
+  "author": "James Crutchley",
+  "license": "ISC",
+  "version": "0.0.3",
   "engines": {
     "node": ">=10.0.0"
   },
@@ -17,15 +19,13 @@
     "package": "electron-forge package",
     "make": "electron-forge make"
   },
-  "keywords": [],
-  "author": "James Crutchley",
-  "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.1",
     "ejs": "^3.1.8",
     "electron-squirrel-startup": "^1.0.0",
     "express": "^4.18.2",
     "nodemon": "^2.0.20",
+    "rpmbuild": "^0.0.23",
     "rss-parser": "^3.12.0"
   },
   "devDependencies": {
