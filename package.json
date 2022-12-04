@@ -2,7 +2,7 @@
   "name": "twit-tv-player",
   "author": "James Crutchley",
   "license": "ISC",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "engines": {
     "node": ">=10.0.0"
   },
@@ -22,6 +22,7 @@
   "dependencies": {
     "body-parser": "^1.20.1",
     "ejs": "^3.1.8",
+    "electron-builder": "^23.6.0",
     "electron-squirrel-startup": "^1.0.0",
     "express": "^4.18.2",
     "nodemon": "^2.0.20",
