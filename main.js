@@ -1,5 +1,4 @@
 const { app, BrowserWindow } = require('electron');
-const path = require('node:path');
 require('./app');
 
 // eslint-disable-next-line global-require
