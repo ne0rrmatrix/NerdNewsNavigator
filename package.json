@@ -2,7 +2,7 @@
   "name": "twit-tv-player",
   "author": "James Crutchley",
   "license": "ISC",
-  "version": "0.0.5-test",
+  "version": "0.0.6",
   "engines": {
     "node": ">=10.0.0"
   },
@@ -38,7 +38,6 @@
     "@electron-forge/maker-zip": "^6.0.3",
     "@electron-forge/publisher-github": "^6.0.4",
     "electron": "^21.3.1",
-    "electron-builder": "^23.6.0",
     "eslint": "^8.28.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
