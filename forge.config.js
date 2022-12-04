@@ -17,16 +17,19 @@ module.exports = {
     },
     {
       name: '@electron-forge/maker-zip',
-      platforms: ['linux'],
+      platforms: ['darwin', 'linux'],
+      config: {},
     },
     {
       name: '@electron-forge/maker-deb',
       config: {},
     },
     {
-      name: '@electron-forge/maker-darwin',
-      config: {},
-    },
+      name: '@electron-forge/maker-dmg',
+  config: {
+    format: 'ULFO'
+  }
+    }
     {
       name: '@electron-forge/maker-rpm',
       config: {},
