@@ -8,24 +8,6 @@
   },
   "description": "Watch Twit TV Podcasts",
   "main": "main.js",
-  "build": {
-    "win": {
-      "target": [
-        {
-          "target": "squirrel",
-          "arch": "x64"
-        }
-      ],
-      "publish": [
-        "github"
-      ]
-    },
-    "linux": {
-      "publish": [
-        "github"
-      ]
-    }
-  },
   "extraFiles": [
     "views",
     "public"
