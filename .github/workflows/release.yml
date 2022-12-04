@@ -19,27 +19,10 @@ jobs:
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v2
         with:
-          node-version: 14
-
-      - name: apt-update
-        if: startsWith(matrix.os, 'ubuntu-latest')
-        run: sudo apt-get update
-
-      - name: autoremove
-        if: startsWith(matrix.os, 'ubuntu-latest')
-        run: sudo apt autoremove
-
-      - name: Install libarchive rpm on Linux
-        if: startsWith(matrix.os, 'ubuntu-latest')
-        run: sudo apt-get install libarchive-tools rpm
+          node-version: 18
 
       - name: Build/release Electron app
-        uses: samuelmeuli/action-electron-builder@v1
-        with:
-          # GitHub token, automatically provided to the action
-          # (No need to define this secret in the repo settings)
-          github_token: ${{ secrets.github_token }}
-
-          # If the commit is tagged with a version (e.g. "v1.0.0"),
-          # release the app after building
-          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+        run: npm run make
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
