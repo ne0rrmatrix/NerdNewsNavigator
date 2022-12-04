@@ -2,7 +2,7 @@
   "name": "twit-tv-player",
   "author": "James Crutchley",
   "license": "ISC",
-  "version": "0.0.6",
+  "version": "0.0.6.1",
   "engines": {
     "node": ">=10.0.0"
   },

@@ -5,7 +5,6 @@ const express = require('express');
 
 const app1 = express(); // Compliant
 app1.disable('x-powered-by');
-const app = express();
 
 const Parser = require('rss-parser');
 
