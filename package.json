@@ -2,33 +2,45 @@
   "name": "twit-tv-player",
   "author": "James Crutchley",
   "license": "ISC",
-  "version": "0.0.5",
+  "version": "0.0.5-test",
   "engines": {
     "node": ">=10.0.0"
   },
   "description": "Watch Twit TV Podcasts",
   "main": "main.js",
+  "build": {
+    "win": {
+      "target": [
+        {
+          "target": "squirrel",
+          "arch": "x64"
+        }
+      ],
+      "publish": [
+        "github"
+      ]
+    },
+    "linux": {
+      "publish": [
+        "github"
+      ]
+    }
+  },
   "extraFiles": [
     "views",
     "public"
   ],
-  "build": {
-    "win": {
-      "publish": ["github"]
-    }
-  },
   "scripts": {
     "lint:ejs": "ejslint  views/pages/*.ejs",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "release": "electron-builder"
+    "publish": "electron-forge publish"
   },
   "dependencies": {
     "body-parser": "^1.20.1",
     "ejs": "^3.1.8",
-    "electron-builder": "^23.6.0",
     "electron-squirrel-startup": "^1.0.0",
     "express": "^4.18.2",
     "nodemon": "^2.0.20",
@@ -41,7 +53,9 @@
     "@electron-forge/maker-rpm": "^6.0.3",
     "@electron-forge/maker-squirrel": "^6.0.3",
     "@electron-forge/maker-zip": "^6.0.3",
+    "@electron-forge/publisher-github": "^6.0.4",
     "electron": "^21.3.1",
+    "electron-builder": "^23.6.0",
     "eslint": "^8.28.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
