@@ -12,12 +12,18 @@
     "views",
     "public"
   ],
+  "build": {
+    "win": {
+      "publish": ["github"]
+    }
+  },
   "scripts": {
     "lint:ejs": "ejslint  views/pages/*.ejs",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "electron-forge make",
+    "release": "electron-builder"
   },
   "dependencies": {
     "body-parser": "^1.20.1",
