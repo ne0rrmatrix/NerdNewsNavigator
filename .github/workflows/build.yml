@@ -49,8 +49,10 @@ jobs:
     steps:
 
       - name: Build/release Electron app
-        uses: samuelmeuli/action-electron-builder@v1.6.0
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@master
         with:
+          node-version: 14
           # GitHub token, automatically provided to the action
           # (No need to define this secret in the repo settings)
           github_token: ${{ secrets.github_token }}
