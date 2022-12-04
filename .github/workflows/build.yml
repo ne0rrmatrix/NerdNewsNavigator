@@ -58,6 +58,8 @@ jobs:
       - name: build
         run: npm run make
       - name: release
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@master
         with:
           # GitHub token, automatically provided to the action
           # (No need to define this secret in the repo settings)
