@@ -3,6 +3,8 @@ const path = require('node:path');
 
 const express = require('express');
 
+const app1 = express(); // Compliant
+app1.disable('x-powered-by');
 const app = express();
 
 const Parser = require('rss-parser');
@@ -16,12 +18,12 @@ const podcast = [];
 const output = [];
 const twitVideo = [];
 const location = path.join(__dirname, 'public');
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json({ type: 'application/*+json' }));
-app.use('/static', express.static(path.join(__dirname, 'public')));
-app.listen(8080);
+app1.set('view engine', 'ejs');
+app1.set('views', path.join(__dirname, 'views'));
+app1.use(bodyParser.urlencoded({ extended: false }));
+app1.use(bodyParser.json({ type: 'application/*+json' }));
+app1.use('/static', express.static(path.join(__dirname, 'public')));
+app1.listen(8080);
 
 const loadFeed = async (data) => {
   const feed = await parser.parseURL(data);
@@ -81,7 +83,7 @@ const getShow = async (test2) => {
       });
     }
   });
-  app.get('/player', (req, res) => {
+  app1.get('/player', (req, res) => {
     res.render('pages/player', {
       podcast,
     });
@@ -128,7 +130,7 @@ const loadfile = () => {
 loadfile();
 
 const appSetPodcast = (test) => {
-  app.get('/show', async (request, res) => {
+  app1.get('/show', async (request, res) => {
     res.render('pages/show', {
       output,
       test,
@@ -141,7 +143,7 @@ const appGetPodcast = async (test) => {
   appSetPodcast(test);
 };
 
-app.post('/', async (req, res) => {
+app1.post('/', async (req, res) => {
   const test = req.body.podcast;
   const test2 = req.body.show;
 
@@ -156,13 +158,13 @@ app.post('/', async (req, res) => {
   }
 });
 
-app.get('/', async (req, res) => {
+app1.get('/', async (req, res) => {
   res.render('pages/index', {
     showData,
   });
 });
 
-app.get('/Live', (req, res) => {
+app1.get('/Live', (req, res) => {
   res.render('pages/Live', {});
 });
 
