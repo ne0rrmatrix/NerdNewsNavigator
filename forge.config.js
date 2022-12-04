@@ -24,6 +24,10 @@ module.exports = {
       config: {},
     },
     {
+      name: '@electron-forge/maker-darwin',
+      config: {},
+    },
+    {
       name: '@electron-forge/maker-rpm',
       config: {},
     },
