@@ -16,8 +16,8 @@
       <h1>
         <%= podcast.title %>
       </h1>
-      <video id="vid" controls id="videoPlayer" poster="<%= podcast.thumbnail  %>" width="900" preload="none">
-        <source src="<%= podcast.link %> " type="video/mp4" />
+      <video id="vid" data-id="<%= podcast.title %>" controls id="videoPlayer" poster="<%= podcast.thumbnail  %>" width="900" preload="none">
+        <source  src="<%= podcast.link %> " type="video/mp4" />
         <track label="English" kind="descriptions" default>
       </video>
       <p><%- podcast.summary %></p>

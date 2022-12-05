@@ -2,7 +2,7 @@
   "name": "twit-tv-player",
   "author": "James Crutchley",
   "license": "ISC",
-  "version": "0.0.6.1",
+  "version": "0.0.7",
   "engines": {
     "node": ">=10.0.0"
   },
@@ -25,9 +25,11 @@
     "ejs": "^3.1.8",
     "electron-squirrel-startup": "^1.0.0",
     "express": "^4.18.2",
+    "node-localstorage": "^2.2.1",
     "nodemon": "^2.0.20",
     "rpmbuild": "^0.0.23",
-    "rss-parser": "^3.12.0"
+    "rss-parser": "^3.12.0",
+    "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.4",

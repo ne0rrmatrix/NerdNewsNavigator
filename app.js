@@ -9,6 +9,8 @@ app1.disable('x-powered-by');
 const Parser = require('rss-parser');
 
 const parser = new Parser();
+const favicon = require('serve-favicon');
+
 const fs = require('fs');
 
 const show = [];
@@ -18,6 +20,7 @@ const output = [];
 const twitVideo = [];
 const location = path.join(__dirname, 'public');
 app1.set('view engine', 'ejs');
+app1.use(favicon(`${__dirname}/public/favicon.ico`));
 app1.set('views', path.join(__dirname, 'views'));
 app1.use(bodyParser.urlencoded({ extended: false }));
 app1.use(bodyParser.json({ type: 'application/*+json' }));
