@@ -1,6 +1,6 @@
 if (typeof localStorage === 'undefined' || localStorage === null) {
-  // eslint-disable-next-line global-require
-  const { LocalStorage } = require('node-localstorage');
+  // eslint-disable-next-line global-require, prefer-const
+  let { LocalStorage } = require('node-localstorage');
   // eslint-disable-next-line no-global-assign
   localStorage = new LocalStorage('./scratch');
 }
