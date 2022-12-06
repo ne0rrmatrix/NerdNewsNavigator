@@ -1,4 +1,14 @@
-# twit-tv-player
-Twit TV pure javascript video Player from RSS Feeds
 
-Current releases can be found here: https://github.com/ne0rrmatrix/twit-tv-player/releases
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <main>
+          <h2>twit-tv-player</h2>
+          <p>Twit TV pure javascript video Player from RSS Feeds</P>
+<a href="https://github.com/ne0rrmatrix/twit-tv-player/releases">Current releases can be found here:</a> 
+        </main>
+    </body>
+</html>
