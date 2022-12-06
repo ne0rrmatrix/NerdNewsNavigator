@@ -4,7 +4,7 @@
   "license": "ISC",
   "version": "0.0.7",
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">=16.0.0"
   },
   "description": "Watch Twit TV Podcasts",
   "main": "main.js",
