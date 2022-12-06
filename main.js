@@ -1,7 +1,6 @@
 const { app, BrowserWindow } = require('electron');
 require('./app');
 
-// eslint-disable-next-line global-require
 if (require('electron-squirrel-startup')) app.quit();
 
 app.disableHardwareAcceleration();

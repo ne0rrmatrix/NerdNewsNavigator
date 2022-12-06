@@ -1,8 +1,6 @@
 module.exports = {
   settings: {
-    'import/core-modules': [
-      'electron',
-    ],
+    'import/core-modules': ['electron'],
   },
   root: true,
   env: {
@@ -11,11 +9,8 @@ module.exports = {
     node: true,
     jquery: true,
   },
-  extends: ['airbnb-base',
-    'eslint:recommended',
-    'plugin:node/recommended'],
-  overrides: [
-  ],
+  extends: ['airbnb-base', 'eslint:recommended', 'plugin:node/recommended'],
+  overrides: [],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
@@ -23,8 +18,13 @@ module.exports = {
   rules: {
     'linebreak-style': 0,
     'no-console': 'off',
-    'node/no-unpublished-require': ['error', {
-      allowModules: ['electron'],
-    }],
+    'global-require': 0,
+    'no-global-assign': ['error', { exceptions: ['localStorage'] }],
+    'node/no-unpublished-require': [
+      'error',
+      {
+        allowModules: ['electron'],
+      },
+    ],
   },
 };
