@@ -1,6 +1,8 @@
 const { app, BrowserWindow } = require('electron');
 require('./app');
-
+require('update-electron-app')({
+  updateInterval: '1 hour',
+});
 if (require('electron-squirrel-startup')) app.quit();
 
 app.disableHardwareAcceleration();

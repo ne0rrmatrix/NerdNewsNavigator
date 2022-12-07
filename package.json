@@ -2,7 +2,7 @@
   "name": "twit-tv-player",
   "author": "James Crutchley",
   "license": "ISC",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "commonjs",
   "engines": {
     "node": ">=16.0.0"
@@ -31,7 +31,8 @@
     "nodemon": "^2.0.20",
     "rpmbuild": "^0.0.23",
     "rss-parser": "^3.12.0",
-    "serve-favicon": "^2.5.0"
+    "serve-favicon": "^2.5.0",
+    "update-electron-app": "^2.0.1"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.4",
