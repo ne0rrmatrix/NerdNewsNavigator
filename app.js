@@ -19,6 +19,7 @@ const podcast = [];
 const output = [];
 const twitVideo = [];
 const location = path.join(__dirname, 'public');
+
 app1.set('view engine', 'ejs');
 app1.use(favicon(`${__dirname}/public/favicon.ico`));
 app1.set('views', path.join(__dirname, 'views'));
@@ -94,30 +95,38 @@ const getShow = async (test2) => {
   });
 };
 
+const writeFile = (jsonContent) => {
+  fs.writeFile(`${location}/output.json`, jsonContent, 'utf-8', (err) => {
+    if (err) {
+      console.log('An error has occurred while writing JSON Object to file.');
+      return console.log(err);
+    }
+    console.log('JSON file has been saved.');
+    return err;
+  });
+};
+
 const createFile = (jsonContent) => {
   if (!fs.existsSync(`${location}/output.json`)) {
-    fs.writeFile(`${location}/output.json`, jsonContent, 'utf-8', (err) => {
-      if (err) {
-        console.log('An error has occurred while writing JSON Object to file.');
-        return console.log(err);
-      }
-      console.log('JSON file has been saved.');
-      return err;
-    });
+    writeFile(jsonContent);
   }
+};
+
+const getFile = () => {
+  fs.readFile(`${location}/output.json`, (err, data) => {
+    if (err) throw err;
+    const video = JSON.parse(data);
+    video.forEach(async (element) => {
+      twitVideo.push(element);
+    });
+    loadPodcasts();
+  });
 };
 
 const readFile = () => {
   setTimeout(() => {
     if (fs.existsSync(`${location}/output.json`)) {
-      fs.readFile(`${location}/output.json`, (err, data) => {
-        if (err) throw err;
-        const video = JSON.parse(data);
-        video.forEach(async (element) => {
-          twitVideo.push(element);
-        });
-        loadPodcasts();
-      });
+      getFile();
     }
   }, 1000);
 };

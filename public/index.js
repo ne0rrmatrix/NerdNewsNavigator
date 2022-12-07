@@ -5,7 +5,6 @@ const getShow = (show) => {
         show: element.dataset.show,
       }, (result) => {
         if (result === 'yes') {
-          console.log('sucess!');
           window.location.href = '/player';
         }
       });
@@ -19,7 +18,6 @@ const getPodcast = (data) => {
         podcast: element.dataset.test,
       }, (answer) => {
         if (answer === 'yes') {
-          console.log('sucess!');
           window.location.href = '/show';
         }
       });
