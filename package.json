@@ -1,5 +1,5 @@
 {
-  "name": "twit-tv-player",
+  "name": "NerdNewsNavigator",
   "author": "James Crutchley",
   "license": "ISC",
   "version": "0.1.2",
@@ -50,10 +50,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ne0rrmatrix/twit-tv-player.git"
+    "url": "git+https://github.com/ne0rrmatrix/NerdNewsNavigator.git"
   },
   "bugs": {
-    "url": "https://github.com/ne0rrmatrix/twit-tv-player/issues"
+    "url": "https://github.com/ne0rrmatrix/NerdNewsNavigator/issues"
   },
-  "homepage": "https://github.com/ne0rrmatrix/twit-tv-player#readme"
+  "homepage": "https://github.com/ne0rrmatrix/NerdNewsNavigator#readme"
 }
