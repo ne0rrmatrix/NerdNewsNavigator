@@ -75,6 +75,7 @@ const getPodcast = async (test) => {
 
 const getShow = async (test2) => {
   podcast.length = 0;
+
   output.forEach((element) => {
     if (element.link === test2) {
       podcast.push({
@@ -85,12 +86,14 @@ const getShow = async (test2) => {
       });
     }
   });
+
   app1.get('/player', (req, res) => {
     res.render('pages/player', {
       podcast,
     });
   });
 };
+
 const createFile = (jsonContent) => {
   if (!fs.existsSync(`${location}/output.json`)) {
     fs.writeFile(`${location}/output.json`, jsonContent, 'utf-8', (err) => {
@@ -103,6 +106,7 @@ const createFile = (jsonContent) => {
     });
   }
 };
+
 const readFile = () => {
   setTimeout(() => {
     if (fs.existsSync(`${location}/output.json`)) {
@@ -117,6 +121,7 @@ const readFile = () => {
     }
   }, 1000);
 };
+
 const loadfile = () => {
   const twit = '[{ "title": "https://feeds.twit.tv/aaa_video_hd.xml" },{ "title": "https://feeds.twit.tv/floss_video_hd.xml" },{ "title": "https://feeds.twit.tv/hom_video_hd.xml" },{ "title": "https://feeds.twit.tv/hop_video_hd.xml" },{ "title": "https://feeds.twit.tv/howin_video_hd.xml" },{ "title": "https://feeds.twit.tv/ipad_video_hd.xml" },{ "title": "https://feeds.twit.tv/mbw_video_hd.xml" },{ "title": "https://feeds.twit.tv/sn_video_hd.xml" },{ "title": "https://feeds.twit.tv/ttg_video_hd.xml" },{ "title": "https://feeds.twit.tv/tnw_video_hd.xml" },{ "title": "https://feeds.twit.tv/twiet_video_hd.xml" },{ "title": "https://feeds.twit.tv/twig_video_hd.xml" },{ "title": "https://feeds.twit.tv/twit_video_hd.xml" },{ "title": "https://feeds.twit.tv/events_video_hd.xml" },{ "title": "https://feeds.twit.tv/specials_video_hd.xml" },{ "title": "https://feeds.twit.tv/bits_video_hd.xml" },{ "title": "https://feeds.twit.tv/throwback_video_large.xml" },{ "title": "https://feeds.twit.tv/leo_video_hd.xml" },{ "title": "https://feeds.twit.tv/ant_video_hd.xml" },{ "title": "https://feeds.twit.tv/jason_video_hd.xml" },{ "title": "https://feeds.twit.tv/mikah_video_hd.xml" }]';
   //* parse json
