@@ -2,7 +2,7 @@
   "name": "nerdnewsnavigator",
   "author": "James Crutchley",
   "license": "ISC",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "type": "commonjs",
   "engines": {
     "node": ">=16.0.0"

@@ -105,6 +105,17 @@ const writeFile = (jsonContent) => {
     return err;
   });
 };
+const deleteFile = () => {
+  if (fs.existsSync(`${location}/output.json`)) {
+    fs.unlink(`${location}/output.json`, (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('file removed');
+      }
+    });
+  }
+};
 
 const createFile = (jsonContent) => {
   if (!fs.existsSync(`${location}/output.json`)) {
@@ -183,5 +194,12 @@ app1.get('/', async (req, res) => {
 app1.get('/Live', (req, res) => {
   res.render('pages/Live', {});
 });
-
+app1.get('/reset', async (req, res) => {
+  deleteFile();
+  loadfile();
+  res.render('pages/index', {
+    showData,
+  });
+  res.end();
+});
 console.log('Server is listening on port 8080');
