@@ -31,18 +31,17 @@
     "nodemon": "^2.0.20",
     "rpmbuild": "^0.0.23",
     "rss-parser": "^3.12.0",
-    "serve-favicon": "^2.5.0",
-    "update-electron-app": "^2.0.1"
+    "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.4",
-    "@electron-forge/maker-deb": "^6.0.3",
+    "@electron-forge/maker-deb": "^6.0.4",
     "@electron-forge/maker-dmg": "^6.0.4",
-    "@electron-forge/maker-rpm": "^6.0.3",
+    "@electron-forge/maker-rpm": "^6.0.4",
     "@electron-forge/maker-squirrel": "^6.0.4",
     "@electron-forge/maker-zip": "^6.0.4",
     "@electron-forge/publisher-github": "^6.0.4",
-    "electron": "^22.0.0",
+    "electron": "^22.0.3",
     "eslint": "^8.32.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5",

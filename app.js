@@ -38,7 +38,7 @@ const loadFeed = async (data) => {
   name.podcast = data;
 
   showData.push(name);
-
+  console.log(showData);
   feed.items.forEach(async (item) => {
     const shows = {
       name: name.title,
