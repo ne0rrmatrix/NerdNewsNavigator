@@ -42,7 +42,7 @@
     "@electron-forge/maker-zip": "^6.1.1",
     "@electron-forge/publisher-github": "^6.1.1",
     "electron": "^25.1.0",
-    "eslint": "^8.40.0",
+    "eslint": "^8.42.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-node": "^11.1.0"
