@@ -136,10 +136,12 @@ public/cache
 !.vscode/launch.json
 !.vscode/extensions.json
 !.vscode/*.code-snippets
-
+.vs/*
 # Local History for Visual Studio Code
 .history/
 
 # Built Visual Studio Code Extensions
 *.vsix
 *.jpg
+.vs/slnx.sqlite
+
