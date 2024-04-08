@@ -22,29 +22,29 @@
     "publish": "electron-forge publish"
   },
   "dependencies": {
-    "@electron/osx-sign": "^1.0.4",
+    "@electron/osx-sign": "^1.1.0",
     "body-parser": "^1.20.2",
     "ejs": "^3.1.9",
     "electron-squirrel-startup": "^1.0.0",
     "express": "^4.19.2",
     "node-localstorage": "^2.2.1",
-    "nodemon": "^2.0.22",
+    "nodemon": "^3.1.0",
     "rpmbuild": "^0.0.23",
     "rss-parser": "^3.13.0",
     "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.1.1",
+    "@electron-forge/cli": "^6.4.2",
     "@electron-forge/maker-deb": "^6.4.2",
-    "@electron-forge/maker-dmg": "^6.1.1",
+    "@electron-forge/maker-dmg": "^6.4.2",
     "@electron-forge/maker-rpm": "^6.4.2",
-    "@electron-forge/maker-squirrel": "^6.1.1",
+    "@electron-forge/maker-squirrel": "^6.4.2",
     "@electron-forge/maker-zip": "^6.4.2",
-    "@electron-forge/publisher-github": "^6.1.1",
-    "electron": "^26.2.4",
-    "eslint": "^8.42.0",
+    "@electron-forge/publisher-github": "^6.4.2",
+    "electron": "^26.6.10",
+    "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-node": "^11.1.0"
   },
   "repository": {
