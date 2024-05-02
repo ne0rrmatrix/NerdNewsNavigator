@@ -24,7 +24,7 @@
   "dependencies": {
     "@electron/osx-sign": "^1.1.0",
     "body-parser": "^1.20.2",
-    "ejs": "^3.1.9",
+    "ejs": "^3.1.10",
     "electron-forge": "^5.2.4",
     "electron-squirrel-startup": "^1.0.0",
     "eslint": "^7.32.0",
